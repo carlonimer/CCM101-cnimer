@@ -12,9 +12,13 @@
 # A1. Connect to the Ubuntu server over SSH
 ssh carlo@192.168.100.52
 
-# A2. (Open in Browser) Show the sleek CloudNova Enterprise Portal & live DB ping
+# A2. (Open in Browser) Show the CloudNova Enterprise Cloud Platform
 Start-Process "http://192.168.100.52:8088"
-# Or curl via terminal for API/health test:
+# In the browser:
+# 1. Click "Test PostgreSQL Ping" -> shows sub-15ms live database latency
+# 2. Under "Deploy Workload", type a Name (e.g. core-auth-service) and click "Provision Enterprise Workload"
+# 3. Point out that it immediately commits to PostgreSQL and appears in the Live Fleet table!
+# Or curl via terminal for API/health verification:
 curl.exe http://192.168.100.52:8088/health
 
 # A3. Prove the firewall: 8088 and 22 are OPEN, 5432 and 5000 are BLOCKED
