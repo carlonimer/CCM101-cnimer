@@ -1,7 +1,7 @@
 ==============================================================================
  CCM101 MISSION 10 - LIVE DEMO COMMANDS  (copy / paste one block at a time)
  Stack: Nginx (8088) -> Flask/Gunicorn (5000) -> PostgreSQL 16 (5432, internal)
- VM IP: 192.168.100.52      User: carlo
+ VM IP: 192.168.100.52      User: carlo     Section: BSIT - 4J
 ==============================================================================
 
 
