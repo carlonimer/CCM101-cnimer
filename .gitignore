@@ -1,0 +1,4 @@
+Connect-Ubuntu.bat
+*.tmp
+*.log
+.env

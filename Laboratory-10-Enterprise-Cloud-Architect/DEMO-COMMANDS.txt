@@ -1,0 +1,118 @@
+==============================================================================
+ CCM101 MISSION 10 - LIVE DEMO COMMANDS  (copy / paste one block at a time)
+ Stack: Nginx (8088) -> Flask/Gunicorn (5000) -> PostgreSQL 16 (5432, internal)
+ VM IP: 192.168.100.52      User: carlo
+==============================================================================
+
+
+------------------------------------------------------------------------------
+ PART A - WINDOWS POWERSHELL (the host laptop)
+------------------------------------------------------------------------------
+
+# A1. Connect to the Ubuntu server over SSH
+ssh carlo@192.168.100.52
+
+# A2. (open a 2nd PowerShell tab) Prove the web app answers through Nginx
+curl.exe http://192.168.100.52:8088
+curl.exe http://192.168.100.52:8088/health
+
+# A3. Prove the firewall: 8088 and 22 are OPEN, 5432 and 5000 are BLOCKED
+Test-NetConnection 192.168.100.52 -Port 8088
+Test-NetConnection 192.168.100.52 -Port 22
+Test-NetConnection 192.168.100.52 -Port 5432
+Test-NetConnection 192.168.100.52 -Port 5000
+
+
+------------------------------------------------------------------------------
+ PART B - UBUNTU SERVER (after ssh)
+------------------------------------------------------------------------------
+
+# B1. Go to the project and show the 3-tier stack
+cd ~/enterprise-cloud
+ls
+cat compose.yaml
+docker compose ps
+
+# B2. Show the architecture proof: the DB network is INTERNAL (no outside access)
+docker network ls
+docker network inspect enterprise-cloud_backend --format 'internal={{.Internal}}'
+docker compose ps --format 'table {{.Service}}\t{{.Status}}\t{{.Ports}}'
+
+# B3. Security: UFW default deny, only SSH + 8088 allowed
+sudo ufw status verbose
+
+# B4. Persistent volume exists
+docker volume ls
+docker volume inspect enterprise-cloud_postgres_data
+
+
+------------------------------------------------------------------------------
+ PART C - PERSISTENCE DEMO (data survives container recreation / reboot)
+------------------------------------------------------------------------------
+
+# C1. Create a demo table and insert a row
+docker compose exec -T db sh -c 'psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE TABLE IF NOT EXISTS demo(id serial PRIMARY KEY, note text);"'
+docker compose exec -T db sh -c 'psql -U $POSTGRES_USER -d $POSTGRES_DB -c "INSERT INTO demo(note) VALUES (now()::text);"'
+docker compose exec -T db sh -c 'psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SELECT * FROM demo;"'
+
+# C2. DESTROY and recreate every container (volume is kept)
+docker compose down
+docker compose up -d
+docker compose ps
+
+# C3. The row is still there -> persistence proven
+docker compose exec -T db sh -c 'psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SELECT * FROM demo;"'
+
+# C4. (Optional, strongest proof) reboot the whole VM, then ssh back in and repeat C3
+sudo reboot
+
+
+------------------------------------------------------------------------------
+ PART D - BACKUP + CRON AUTOMATION
+------------------------------------------------------------------------------
+
+# D1. Run the backup script by hand
+./scripts/backup-db.sh
+ls -lht backups/ | head
+
+# D2. Show the cron schedule (daily 2:00 AM) and the log
+crontab -l | tail -n 2
+tail -n 5 backups/backup.log
+
+
+------------------------------------------------------------------------------
+ PART E - DISASTER RECOVERY (delete data, then restore from backup)
+------------------------------------------------------------------------------
+
+# E1. Simulate disaster: drop the demo table
+docker compose exec -T db sh -c 'psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP TABLE demo;"'
+
+# E2. Pick the newest backup file
+LATEST=$(ls -t backups/cloudapp_*.sql.gz | head -1); echo $LATEST
+
+# E3. Restore it
+gunzip -c $LATEST | docker compose exec -T db sh -c 'psql -U $POSTGRES_USER -d $POSTGRES_DB'
+
+# E4. Data is back
+docker compose exec -T db sh -c 'psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SELECT * FROM demo;"'
+
+NOTE: the backup in E2 must be taken AFTER step C1 (run D1 first) so it contains the demo table.
+
+
+------------------------------------------------------------------------------
+ PART F - SELF-HEALING / FAILURE DEMO (optional)
+------------------------------------------------------------------------------
+
+# F1. Stop the app tier -> Nginx returns 502
+docker compose stop app
+curl.exe -i http://192.168.100.52:8088      # run this one in PowerShell on Windows
+
+# F2. Bring it back
+docker compose start app
+docker compose ps
+
+
+------------------------------------------------------------------------------
+ PART G - CLEAN-UP AFTER THE DEMO
+------------------------------------------------------------------------------
+docker compose exec -T db sh -c 'psql -U $POSTGRES_USER -d $POSTGRES_DB -c "DROP TABLE IF EXISTS demo;"'

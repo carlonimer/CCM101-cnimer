@@ -22,10 +22,11 @@ Welcome to my Cloud Computing Portfolio repository for **CCM101**. This portfoli
 
 ## Capstone Highlight: Mission 10 (The Enterprise Cloud Architect)
 For the final mission, I stepped into the role of **Enterprise Cloud Architect** for the simulated company *CloudNova Technologies* to design, deploy, and defend a sovereign, multi-tier enterprise cloud infrastructure:
-* **Architecture:** Multi-tier decoupled architecture (WordPress + MySQL 8.0) managed via Docker Compose.
-* **Storage Persistence:** Named volumes ensuring 100% data persistence across container and VM reboots.
-* **Perimeter Security:** Hardened Ubuntu Server host with Uncomplicated Firewall (UFW) enforcing a Default Deny policy.
-* **Autonomous Operations:** Executable Bash disaster recovery script (`automation-script.sh`) with hot MySQL database dumps, volume archiving, SHA-256 integrity checks, automatic 7-day retention rotation, and scheduled via Cron.
+* **Architecture:** 3-tier decoupled architecture featuring an Nginx reverse proxy (host port `8088`), Python Flask application tier served by Gunicorn (internal port `5000`), and PostgreSQL 16 database tier (internal port `5432`).
+* **Network Segmentation:** Dual Docker bridge networks (`frontend` and `backend`), with `backend` set to `internal: true` so the database cannot communicate with or be reached from external networks.
+* **Storage Persistence:** Named volume (`enterprise-cloud_postgres_data`) ensuring 100% database persistence across container recreations and host reboots.
+* **Perimeter Security:** Hardened Ubuntu Server host with Uncomplicated Firewall (UFW) enforcing a Default Deny policy, permitting only SSH (port 22) and web ingress (port 8088).
+* **Autonomous Operations:** Executable Bash disaster recovery script (`scripts/backup-db.sh`) with compressed PostgreSQL snapshots (`pg_dump`), automatic 7-day retention cleanup, and scheduled via Cron (`0 2 * * *`).
 * **Client Handover Manual:** Complete operational runbook formatted for 5.5" × 8.5" booklet printing.
 
-Explore full documentation and source code in [`Laboratory-10-Enterprise-Cloud-Architect/`](Laboratory-10-Enterprise-Cloud-Architect/).
+Explore full documentation, source code, and live demo commands in [`Laboratory-10-Enterprise-Cloud-Architect/`](Laboratory-10-Enterprise-Cloud-Architect/).
