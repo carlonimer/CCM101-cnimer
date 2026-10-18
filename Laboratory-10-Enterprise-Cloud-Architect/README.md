@@ -46,7 +46,7 @@
 | **`automation-script.sh`** | Autonomous PostgreSQL backup and rotation bash script | [View File](automation-script.sh) |
 | **`DEMO-COMMANDS.txt`** | Complete cheat-sheet of live defense commands for PowerShell & Ubuntu | [View Commands](DEMO-COMMANDS.txt) |
 | **`operational-manual.md`** | Comprehensive Client Handover Manual (Formatted for 5.5" x 8.5" Booklet) | [View Manual](operational-manual.md) |
-| **`final-reflection.md`** | Personal capstone reflection synthesizing journey from Mission 1 to 10 | [View Reflection](final-reflection.md) |
+| **`final-reflection.md`** | Personal final reflection synthesizing journey from Mission 1 to 10 | [View Reflection](final-reflection.md) |
 | **`app/`** | Application tier source code (Flask app, Gunicorn, Dockerfile) | [Explore App](app/) |
 | **`nginx/`** | Reverse proxy configuration (`default.conf`) | [Explore Nginx](nginx/) |
 | **`scripts/`** | Operational scripts (`backup-db.sh`) | [Explore Scripts](scripts/) |

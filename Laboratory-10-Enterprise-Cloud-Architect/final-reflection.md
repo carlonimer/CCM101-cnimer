@@ -14,7 +14,7 @@ When I first began CCM101 in **Mission 1: Welcome to the Cloud**, I stepped into
 
 As the curriculum progressed through **Missions 2 through 9**, the challenges shifted from merely operating within a single virtual machine to understanding cloud-native design principles. Moving through infrastructure blueprinting, multi-cloud evaluation, virtualization, containerization with Docker, network segmentation, and automation scripts gradually transitioned my mindset from that of an end-user to an infrastructure engineer.
 
-Reaching **Mission 10: The Enterprise Cloud Architect** was a true capstone experience. There was no guided tutorial, no step-by-step handholding, and no safety net. Stepping up to solve a Fortune 500 enterprise brief required synthesizing every core discipline mastered over the semester:
+Reaching **Mission 10: The Enterprise Cloud Architect** was our culminating final requirement experience. There was no guided tutorial, no step-by-step handholding, and no safety net. Stepping up to solve a Fortune 500 enterprise brief required synthesizing every core discipline mastered over the semester:
 1. Translating business and regulatory requirements into an architectural blueprint.
 2. Building an automated, reproducible multi-tier application stack via Infrastructure as Code (`docker-compose.yml`).
 3. Locking down the perimeter with host-based firewall policies (`UFW`) and strict network isolation.

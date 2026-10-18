@@ -16,11 +16,11 @@ Welcome to my Cloud Computing Portfolio repository for **CCM101**. This portfoli
 | **Laboratory 02** | Build the Cloud Infrastructure Blueprint | Completed | [Explore Lab 02](Laboratory-02-Build-the-Cloud-Infrastructure-Blueprint/) |
 | **Laboratory 03** | Multi-Cloud Explorer | Completed | [Explore Lab 03](Laboratory-03-Multi-Cloud-Explorer/) |
 | *Missions 04–09* | Cloud-Native Containers, Networking & Automation | Completed | *Course Progression* |
-| **Laboratory 10 (Capstone)** | **Mission 10: The Enterprise Cloud Architect** | **Completed** | [**Explore Lab 10 Capstone**](Laboratory-10-Enterprise-Cloud-Architect/) |
+| **Laboratory 10 (Final Requirement)** | **Mission 10: The Enterprise Cloud Architect** | **Completed** | [**Explore Lab 10**](Laboratory-10-Enterprise-Cloud-Architect/) |
 
 ---
 
-## Capstone Highlight: Mission 10 (The Enterprise Cloud Architect)
+## Final Requirement: Mission 10 (The Enterprise Cloud Architect)
 For the final mission, I stepped into the role of **Enterprise Cloud Architect** for the simulated company *CloudNova Technologies* to design, deploy, and defend a sovereign, multi-tier enterprise cloud infrastructure:
 * **Architecture:** 3-tier decoupled architecture featuring an Nginx reverse proxy (host port `8088`), Python Flask application tier served by Gunicorn (internal port `5000`), and PostgreSQL 16 database tier (internal port `5432`).
 * **Network Segmentation:** Dual Docker bridge networks (`frontend` and `backend`), with `backend` set to `internal: true` so the database cannot communicate with or be reached from external networks.
