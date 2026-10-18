@@ -7,30 +7,101 @@ from flask import Flask, jsonify, request, render_template_string
 
 app = Flask(__name__)
 
+def get_db_connection():
+    return psycopg2.connect(
+        host=os.environ.get("DB_HOST", "db"),
+        dbname=os.environ.get("DB_NAME", "cloudapp"),
+        user=os.environ.get("DB_USER", "clouduser"),
+        password=os.environ.get("DB_PASSWORD", "CloudNovaSecurePass2026!"),
+        connect_timeout=3
+    )
+
+def init_db():
+    try:
+        conn = get_db_connection()
+        with conn.cursor() as cur:
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS enterprise_workloads (
+                    id SERIAL PRIMARY KEY,
+                    name VARCHAR(100) NOT NULL,
+                    tier VARCHAR(60) NOT NULL,
+                    region VARCHAR(60) NOT NULL,
+                    ram VARCHAR(20) NOT NULL,
+                    status VARCHAR(30) DEFAULT 'ONLINE',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                );
+            """)
+            cur.execute("SELECT COUNT(*) FROM enterprise_workloads;")
+            count = cur.fetchone()[0]
+            if count == 0:
+                initial_nodes = [
+                    ('core-banking-gateway', 'High-Throughput Edge Proxy', 'ap-southeast-manila', '16 GB', 'ONLINE'),
+                    ('analytics-pipeline-db', 'Dedicated PostgreSQL Cluster', 'ap-southeast-manila', '32 GB', 'ONLINE'),
+                    ('neural-inference-node', 'Sovereign AI Compute Cluster', 'us-east-virginia', '64 GB', 'ONLINE')
+                ]
+                for node in initial_nodes:
+                    cur.execute(
+                        "INSERT INTO enterprise_workloads (name, tier, region, ram, status) VALUES (%s, %s, %s, %s, %s);",
+                        node
+                    )
+            conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Database init notice: {e}")
+
+# Attempt database initialization on startup
+try:
+    init_db()
+except Exception:
+    pass
+
+def check_database():
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT 1")
+            return cur.fetchone()[0] == 1
+    finally:
+        conn.close()
+
+def get_workloads():
+    try:
+        conn = get_db_connection()
+        with conn.cursor() as cur:
+            cur.execute("SELECT id, name, tier, region, ram, status, to_char(created_at, 'YYYY-MM-DD HH24:MI:SS') FROM enterprise_workloads ORDER BY id DESC LIMIT 15;")
+            rows = cur.fetchall()
+        conn.close()
+        return rows
+    except Exception:
+        return []
+
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudNova Technologies - Enterprise Cloud Portal</title>
+    <title>CloudNova Technologies — Enterprise Cloud Infrastructure</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-base: #070a13;
-            --bg-card: rgba(15, 23, 42, 0.75);
-            --bg-card-hover: rgba(30, 41, 59, 0.85);
-            --border-glow: rgba(59, 130, 246, 0.25);
+            --bg-base: #060913;
+            --bg-surface: #0b1120;
+            --bg-card: rgba(15, 23, 42, 0.72);
+            --bg-card-hover: rgba(26, 38, 66, 0.85);
             --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(56, 189, 248, 0.28);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --accent-blue: #38bdf8;
-            --accent-purple: #a855f7;
-            --accent-emerald: #10b981;
-            --accent-emerald-glow: rgba(16, 185, 129, 0.2);
-            --accent-amber: #f59e0b;
+            --text-dim: #64748b;
+            --cyan: #38bdf8;
+            --blue: #2563eb;
+            --purple: #8b5cf6;
+            --emerald: #10b981;
+            --emerald-glow: rgba(16, 185, 129, 0.2);
+            --amber: #f59e0b;
         }
 
         * {
@@ -43,543 +114,942 @@ HTML_TEMPLATE = """
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-base);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
-                radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+                radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.12) 0px, transparent 45%),
+                radial-gradient(circle at 90% 10%, rgba(139, 92, 246, 0.14) 0px, transparent 45%),
+                radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
             background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding: 2.5rem 1.5rem;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            width: 100%;
-            flex: 1;
-        }
-
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2.5rem;
-            padding-bottom: 1.5rem;
+        /* Top Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(6, 9, 19, 0.82);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-subtle);
-            flex-wrap: wrap;
-            gap: 1rem;
+            padding: 1rem 2rem;
         }
 
-        .brand-block {
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-main);
         }
 
         .brand-logo {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #0284c7, #8b5cf6);
-            border-radius: 12px;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+            font-size: 1.2rem;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
         }
 
-        .brand-logo svg {
-            width: 26px;
-            height: 26px;
-            fill: #ffffff;
-        }
-
-        .brand-text h1 {
-            font-size: 1.4rem;
+        .brand-name {
+            font-size: 1.15rem;
             font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            letter-spacing: -0.02em;
+        }
+
+        .brand-name span {
+            background: linear-gradient(90deg, #38bdf8, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .brand-text p {
-            font-size: 0.8rem;
-            color: var(--accent-blue);
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
             font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyan);
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.55rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* Hero */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 2.5rem;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
         }
 
         .badge-live {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: var(--accent-emerald-glow);
-            border: 1px solid rgba(16, 185, 129, 0.4);
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
             color: #34d399;
-            padding: 0.4rem 0.9rem;
-            border-radius: 9999px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            margin-bottom: 1.25rem;
         }
 
         .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background: #10b981;
+            width: 7px;
+            height: 7px;
+            background-color: var(--emerald);
             border-radius: 50%;
-            box-shadow: 0 0 10px #10b981;
-            animation: pulse 1.8s infinite;
+            box-shadow: 0 0 10px var(--emerald);
+            animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.7; }
         }
 
-        /* Banner */
-        .hero-banner {
-            background: var(--bg-card);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-glow);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #38bdf8, #818cf8, #34d399);
-        }
-
-        .hero-title {
-            font-size: 1.6rem;
+        .hero h1 {
+            font-size: 3rem;
             font-weight: 800;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.25rem;
         }
 
-        .hero-subtitle {
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
             color: var(--text-muted);
-            font-size: 0.95rem;
-            max-width: 750px;
             line-height: 1.6;
-        }
-
-        /* Architecture Flow */
-        .arch-flow {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.25rem;
             margin-bottom: 2rem;
+            max-width: 580px;
         }
 
-        .arch-card {
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: #fff;
+            padding: 0.85rem 1.75rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(15, 23, 42, 0.8);
+            color: var(--text-main);
+            padding: 0.85rem 1.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: var(--border-accent);
+        }
+
+        /* Glass Cards */
+        .glass-card {
             background: var(--bg-card);
-            backdrop-filter: blur(10px);
             border: 1px solid var(--border-subtle);
             border-radius: 16px;
-            padding: 1.5rem;
-            transition: all 0.25s ease;
-            position: relative;
+            padding: 1.75rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
         }
 
-        .arch-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-glow);
-            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15);
+        /* Telemetry Widget */
+        .telemetry-card {
+            border: 1px solid var(--border-accent);
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(8, 14, 28, 0.95));
+            box-shadow: 0 16px 40px rgba(2, 132, 199, 0.15);
         }
 
-        .tier-label {
-            font-size: 0.75rem;
+        .telemetry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .telemetry-header h3 {
+            font-size: 1rem;
             font-weight: 700;
-            color: var(--accent-blue);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.4rem;
-        }
-
-        .card-name {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 0.5rem;
         }
 
         .status-pill {
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 0.2rem 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
             border-radius: 6px;
             background: rgba(16, 185, 129, 0.15);
             color: #34d399;
             border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
-        .meta-list {
-            list-style: none;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .meta-list li {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .mono {
-            font-family: 'JetBrains Mono', monospace;
-            color: #e2e8f0;
-            font-size: 0.8rem;
-        }
-
-        /* Verification Panel */
-        .details-grid {
+        .metrics-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        @media (max-width: 850px) {
-            .details-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .panel {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 1.5rem;
-        }
-
-        .panel-heading {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #f1f5f9;
-        }
-
-        .db-status-box {
+        .metric-box {
             background: rgba(2, 6, 23, 0.6);
             border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
         }
 
-        .db-info h4 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #f8fafc;
+        .metric-box .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+            margin-bottom: 0.35rem;
         }
 
-        .db-info p {
-            font-size: 0.8rem;
-            color: var(--text-muted);
+        .metric-box .val {
+            font-size: 1.35rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--cyan);
+        }
+
+        .metric-box .sub {
+            font-size: 0.75rem;
+            color: var(--emerald);
             margin-top: 0.2rem;
         }
 
-        .btn-ping {
-            background: linear-gradient(135deg, #0284c7, #2563eb);
-            color: #ffffff;
-            border: none;
-            padding: 0.6rem 1.1rem;
+        /* Ping Button inside Telemetry */
+        .btn-ping-live {
+            width: 100%;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--cyan);
+            border: 1px solid var(--border-accent);
+            padding: 0.75rem;
             border-radius: 8px;
-            font-family: inherit;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.85rem;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
-        .btn-ping:hover {
+        .btn-ping-live:hover {
+            background: rgba(56, 189, 248, 0.2);
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+        }
+
+        /* Region Ticker */
+        .region-ticker {
+            background: rgba(11, 17, 32, 0.7);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .ticker-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--emerald);
+            box-shadow: 0 0 8px var(--emerald);
+        }
+
+        .ticker-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .ticker-val {
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-main);
+        }
+
+        .ticker-latency {
+            font-size: 0.8rem;
+            color: var(--emerald);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Section Headings */
+        .section-header {
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Two Column Layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 968px) {
+            .hero { grid-template-columns: 1fr; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+
+        /* Provisioning Form */
+        .form-group {
+            margin-bottom: 1.15rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.45rem;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(2, 6, 23, 0.7);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+        }
+
+        select.form-control option {
+            background-color: var(--bg-surface);
+            color: var(--text-main);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: white;
+            border: none;
+            padding: 0.85rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-submit:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.45);
+            box-shadow: 0 6px 22px rgba(37, 99, 235, 0.6);
         }
 
-        .btn-ping:active {
-            transform: translateY(1px);
+        .form-hint {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 0.75rem;
+            text-align: center;
         }
 
-        .info-table {
+        /* Workload Table */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 0.88rem;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(2, 6, 23, 0.8);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.85rem;
         }
 
-        .info-table td {
-            padding: 0.6rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
         }
 
-        .info-table td:first-child {
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .info-table td:last-child {
-            text-align: right;
+        .workload-name {
+            color: #38bdf8;
             font-weight: 600;
-            color: #f1f5f9;
         }
 
-        footer {
-            margin-top: auto;
-            text-align: center;
-            font-size: 0.8rem;
+        .badge-status {
+            display: inline-block;
+            padding: 0.2rem 0.55rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Architecture Grid */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .tier-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        .tier-card:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-2px);
+        }
+
+        .tier-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--cyan);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-desc {
+            font-size: 0.85rem;
             color: var(--text-muted);
-            padding-top: 2rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .tier-port {
+            display: inline-block;
+            background: rgba(2, 6, 23, 0.7);
+            border: 1px solid var(--border-subtle);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--emerald);
+        }
+
+        /* Footer */
+        footer {
             border-top: 1px solid var(--border-subtle);
+            background: rgba(6, 9, 19, 0.95);
+            padding: 2.5rem 1.5rem;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
     </style>
 </head>
 <body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-inner">
+            <a href="/" class="brand">
+                <div class="brand-logo">⚡</div>
+                <div class="brand-name">Cloud<span>Nova</span> <small style="font-size: 0.65em; font-weight: 500; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; margin-left: 4px;">Enterprise</small></div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#telemetry">Live Telemetry</a></li>
+                <li><a href="#fleet">Fleet Provisioner</a></li>
+                <li><a href="#topology">Zero-Trust Topology</a></li>
+                <li><a href="/health" target="_blank">Health API</a></li>
+            </ul>
+            <button class="nav-cta" onclick="document.getElementById('fleet').scrollIntoView({behavior: 'smooth'})">Deploy Workload</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
     <div class="container">
-        <!-- Header -->
-        <header>
-            <div class="brand-block">
-                <div class="brand-logo">
-                    <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
-                </div>
-                <div class="brand-text">
-                    <h1>CloudNova Technologies</h1>
-                    <p>Enterprise Cloud Operations Portal</p>
-                </div>
-            </div>
-            <div class="badge-live">
-                <span class="pulse-dot"></span>
-                <span>SYSTEM OPERATIONAL</span>
-            </div>
-        </header>
 
-        <!-- Hero -->
-        <div class="hero-banner">
-            <div class="hero-title">CCM101 Final Requirement: The Enterprise Cloud Architect</div>
-            <div class="hero-subtitle">
-                Production-grade multi-tier containerized cloud infrastructure deployed on Ubuntu Server 24.04 LTS with automated disaster recovery, perimeter security hardening, and persistent state management.
-            </div>
-        </div>
-
-        <!-- Architecture Tiers -->
-        <div class="arch-flow">
-            <!-- Tier 1: Nginx -->
-            <div class="arch-card">
-                <div class="tier-label">Tier 1: Reverse Proxy</div>
-                <div class="card-name">
-                    <span>Nginx Alpine</span>
-                    <span class="status-pill">ACTIVE</span>
+        <!-- Hero Section -->
+        <div class="hero">
+            <div>
+                <div class="badge-live">
+                    <span class="pulse-dot"></span> Production Cluster Active
                 </div>
-                <ul class="meta-list">
-                    <li><span>Host Port:</span> <span class="mono">8088 / HTTP</span></li>
-                    <li><span>Container Port:</span> <span class="mono">80 / TCP</span></li>
-                    <li><span>Security:</span> <span>Public Ingress</span></li>
-                </ul>
+                <h1>Mission-Critical <span class="highlight">Enterprise Cloud</span> Platform</h1>
+                <p class="hero-desc">
+                    Engineered for high-availability container orchestration, isolated zero-trust database topologies, and automated disaster recovery resilience.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn-primary" onclick="document.getElementById('fleet').scrollIntoView({behavior: 'smooth'})">
+                        <span>Provision Workload</span> &rarr;
+                    </button>
+                    <button class="btn-secondary" onclick="document.getElementById('topology').scrollIntoView({behavior: 'smooth'})">
+                        View Topology Specs
+                    </button>
+                </div>
             </div>
 
-            <!-- Tier 2: Flask -->
-            <div class="arch-card">
-                <div class="tier-label">Tier 2: Application Tier</div>
-                <div class="card-name">
-                    <span>Flask / Gunicorn</span>
-                    <span class="status-pill">HEALTHY</span>
-                </div>
-                <ul class="meta-list">
-                    <li><span>Internal Port:</span> <span class="mono">5000 / TCP</span></li>
-                    <li><span>Workers:</span> <span class="mono">2 Gunicorn</span></li>
-                    <li><span>Network:</span> <span class="mono">frontend, backend</span></li>
-                </ul>
-            </div>
-
-            <!-- Tier 3: PostgreSQL -->
-            <div class="arch-card">
-                <div class="tier-label">Tier 3: Database Tier</div>
-                <div class="card-name">
-                    <span>PostgreSQL 16</span>
-                    <span class="status-pill" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.1);">ISOLATED</span>
-                </div>
-                <ul class="meta-list">
-                    <li><span>Internal Port:</span> <span class="mono">5432 / TCP</span></li>
-                    <li><span>Host Access:</span> <span style="color: #f87171; font-weight:700;">BLOCKED (UFW)</span></li>
-                    <li><span>Network:</span> <span class="mono">backend (internal)</span></li>
-                </ul>
-            </div>
-
-            <!-- Tier 4: Storage -->
-            <div class="arch-card">
-                <div class="tier-label">Storage & Automation</div>
-                <div class="card-name">
-                    <span>Volume & Cron</span>
-                    <span class="status-pill">PERSISTENT</span>
-                </div>
-                <ul class="meta-list">
-                    <li><span>Volume:</span> <span class="mono">postgres_data</span></li>
-                    <li><span>Backup:</span> <span class="mono">Daily 02:00 AM</span></li>
-                    <li><span>Retention:</span> <span>7 Days (Auto-Rotate)</span></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Verification Panels -->
-        <div class="details-grid">
-            <!-- Left: Interactive Database Status -->
-            <div class="panel">
-                <div class="panel-heading">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 4.02 2 6.5s4.48 4.5 10 4.5 10-2.02 10-4.5S17.52 2 12 2zm0 7c-4.42 0-8-1.57-8-3.5S7.58 2 12 2s8 1.57 8 3.5S16.42 9 12 9zm0 2c-5.52 0-10 2.02-10 4.5s4.48 4.5 10 4.5 10-2.02 10-4.5S17.52 11 12 11zm0 7c-4.42 0-8-1.57-8-3.5s3.58-3.5 8-3.5 8 1.57 8 3.5-3.58 3.5-8 3.5zm0 2c-5.52 0-10 2.02-10 4.5s4.48 4.5 10 4.5 10-2.02 10-4.5S17.52 20 12 20z"/></svg>
-                    <span>Live Database Telemetry</span>
-                </div>
-                <div class="db-status-box">
-                    <div class="db-info">
-                        <h4>PostgreSQL 16 Connection Status</h4>
-                        <p id="ping-text">State: <strong style="color: #34d399;">Connected & Healthy</strong></p>
+            <!-- Telemetry Glass Card -->
+            <div class="glass-card telemetry-card" id="telemetry">
+                <div class="telemetry-header">
+                    <h3>⚡ Live Cluster Telemetry</h3>
+                    <div class="status-pill">
+                        <span class="pulse-dot"></span> <span id="db-status-pill">{{ 'CONNECTED' if is_connected else 'OFFLINE' }}</span>
                     </div>
-                    <button class="btn-ping" onclick="pingDatabase()">Ping Database</button>
                 </div>
-                <table class="info-table">
-                    <tr>
-                        <td>Container Hostname</td>
-                        <td class="mono">{{ server_hostname }}</td>
-                    </tr>
-                    <tr>
-                        <td>Database Engine</td>
-                        <td class="mono">PostgreSQL 16 Alpine</td>
-                    </tr>
-                    <tr>
-                        <td>Target Database</td>
-                        <td class="mono">{{ db_name }}</td>
-                    </tr>
-                    <tr>
-                        <td>Persistent Volume</td>
-                        <td class="mono">enterprise-cloud_postgres_data</td>
-                    </tr>
-                    <tr>
-                        <td>Last Telemetry Check</td>
-                        <td class="mono" id="check-time">{{ check_time }}</td>
-                    </tr>
-                </table>
-            </div>
 
-            <!-- Right: Student & Environment Metadata -->
-            <div class="panel">
-                <div class="panel-heading">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    <span>Architect Information</span>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="label">Platform Uptime</div>
+                        <div class="val">99.999%</div>
+                        <div class="sub">High-Availability</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Database Cluster</div>
+                        <div class="val" style="color: #34d399;">PostgreSQL 16</div>
+                        <div class="sub">Internal Isolation</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Ingress Proxy</div>
+                        <div class="val">Nginx:8088</div>
+                        <div class="sub">Reverse Proxy</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="label">Container Host</div>
+                        <div class="val" style="font-size: 1.05rem; overflow: hidden; text-overflow: ellipsis;">{{ server_hostname }}</div>
+                        <div class="sub">Docker Compose</div>
+                    </div>
                 </div>
-                <table class="info-table">
-                    <tr>
-                        <td>Architect</td>
-                        <td>Carlo Nimer</td>
-                    </tr>
-                    <tr>
-                        <td>Section</td>
-                        <td>BSIT - 4J</td>
-                    </tr>
-                    <tr>
-                        <td>Course</td>
-                        <td>CCM101 - Cloud Computing</td>
-                    </tr>
-                    <tr>
-                        <td>Instructor</td>
-                        <td>Jenkielyn C. Torres</td>
-                    </tr>
-                    <tr>
-                        <td>Institution</td>
-                        <td>Univ. of Eastern Pangasinan</td>
-                    </tr>
-                    <tr>
-                        <td>Hypervisor</td>
-                        <td>Oracle VirtualBox 7.x</td>
-                    </tr>
-                    <tr>
-                        <td>Host VM OS</td>
-                        <td>Ubuntu Server 24.04 LTS</td>
-                    </tr>
-                    <tr>
-                        <td>Firewall Policy</td>
-                        <td>UFW Default Deny</td>
-                    </tr>
-                </table>
+
+                <button class="btn-ping-live" id="btn-ping" onclick="pingDatabase()">
+                    <span>Pinging Database Engine...</span>
+                </button>
+                <div style="font-size: 0.75rem; color: var(--text-dim); text-align: center; margin-top: 0.6rem; font-family: 'JetBrains Mono', monospace;" id="ping-log">
+                    Last Healthcheck: {{ check_time }}
+                </div>
             </div>
         </div>
 
-        <!-- Footer -->
-        <footer>
-            CloudNova Technologies &copy; 2026. Enterprise Cloud Infrastructure Final Requirement — BSIT - 4J.
-        </footer>
+        <!-- Global Region Ticker -->
+        <div class="region-ticker">
+            <div class="ticker-item">
+                <div class="ticker-dot"></div>
+                <div>
+                    <div class="ticker-label">Asia-Pacific (Manila)</div>
+                    <div class="ticker-val">ap-southeast-1 <span class="ticker-latency">8ms</span></div>
+                </div>
+            </div>
+            <div class="ticker-item">
+                <div class="ticker-dot"></div>
+                <div>
+                    <div class="ticker-label">Asia-Pacific (Tokyo)</div>
+                    <div class="ticker-val">ap-northeast-1 <span class="ticker-latency">34ms</span></div>
+                </div>
+            </div>
+            <div class="ticker-item">
+                <div class="ticker-dot"></div>
+                <div>
+                    <div class="ticker-label">Europe (Frankfurt)</div>
+                    <div class="ticker-val">eu-central-1 <span class="ticker-latency">165ms</span></div>
+                </div>
+            </div>
+            <div class="ticker-item">
+                <div class="ticker-dot"></div>
+                <div>
+                    <div class="ticker-label">US-East (Virginia)</div>
+                    <div class="ticker-val">us-east-1 <span class="ticker-latency">148ms</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two Column: Provisioner & Live Workloads -->
+        <div class="grid-2" id="fleet">
+            
+            <!-- Provisioning Form -->
+            <div class="glass-card">
+                <div style="margin-bottom: 1.25rem;">
+                    <h3 style="font-size: 1.2rem; font-weight: 700;">Deploy Workload</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">Commit new instance to persistent database.</p>
+                </div>
+
+                <form id="provisionForm" onsubmit="handleProvision(event)">
+                    <div class="form-group">
+                        <label>Workload Name</label>
+                        <input type="text" id="wName" class="form-control" placeholder="e.g. prod-api-cluster" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Architecture Tier</label>
+                        <select id="wTier" class="form-control">
+                            <option value="Dedicated PostgreSQL Cluster">Dedicated PostgreSQL Cluster</option>
+                            <option value="High-Throughput Edge Proxy">High-Throughput Edge Proxy</option>
+                            <option value="Sovereign AI Compute Cluster">Sovereign AI Compute Cluster</option>
+                            <option value="Microservice Gateway">Microservice Gateway</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Target Region</label>
+                        <select id="wRegion" class="form-control">
+                            <option value="ap-southeast-manila">ap-southeast-manila</option>
+                            <option value="ap-northeast-tokyo">ap-northeast-tokyo</option>
+                            <option value="us-east-virginia">us-east-virginia</option>
+                            <option value="eu-central-frankfurt">eu-central-frankfurt</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>RAM Allocation</label>
+                        <select id="wRam" class="form-control">
+                            <option value="8 GB">8 GB High-Speed RAM</option>
+                            <option value="16 GB">16 GB Enterprise ECC</option>
+                            <option value="32 GB">32 GB Dedicated Buffer</option>
+                            <option value="64 GB">64 GB High-Compute</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btn-submit-workload">
+                        ⚡ Provision Enterprise Workload
+                    </button>
+                    <p class="form-hint">Writes directly to PostgreSQL on Docker backend network.</p>
+                </form>
+            </div>
+
+            <!-- Live PostgreSQL Records Table -->
+            <div class="glass-card">
+                <div class="section-header" style="margin-bottom: 1rem;">
+                    <div>
+                        <h3 style="font-size: 1.2rem; font-weight: 700;">Live Fleet Workloads</h3>
+                        <p class="section-subtitle">Active records stored in named Docker volume (enterprise-cloud_postgres_data).</p>
+                    </div>
+                    <button onclick="location.reload()" class="btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                        &#x21bb; Refresh
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="workloads-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Workload Name</th>
+                                <th>Service Tier</th>
+                                <th>Region</th>
+                                <th>RAM</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="workload-rows">
+                            {% for w in workloads %}
+                            <tr>
+                                <td style="color: var(--text-dim);">#{{ w[0] }}</td>
+                                <td class="workload-name">{{ w[1] }}</td>
+                                <td style="color: var(--text-muted); font-size: 0.8rem;">{{ w[2] }}</td>
+                                <td>{{ w[3] }}</td>
+                                <td>{{ w[4] }}</td>
+                                <td><span class="badge-status">{{ w[5] }}</span></td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: var(--text-dim); padding: 2rem;">No workloads provisioned yet. Use the form to deploy.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zero-Trust Architecture Section -->
+        <div id="topology">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Zero-Trust Infrastructure Topology</h2>
+                    <p class="section-subtitle">Engineered with defense-in-depth isolation and host firewall enforcement.</p>
+                </div>
+            </div>
+
+            <div class="arch-grid">
+                <div class="tier-card">
+                    <div class="tier-num">Tier 1 &mdash; Perimeter Ingress</div>
+                    <div class="tier-title">Nginx Reverse Proxy</div>
+                    <div class="tier-desc">Handles incoming HTTP client requests. Terminates external network connections and balances traffic to backend containers.</div>
+                    <div class="tier-port">Host: Port 8088 &rarr; Container: Port 80</div>
+                </div>
+
+                <div class="tier-card">
+                    <div class="tier-num">Tier 2 &mdash; Application Engine</div>
+                    <div class="tier-title">Flask / Gunicorn App</div>
+                    <div class="tier-desc">Multi-worker application layer running inside dual-bridge networks. Connects frontend ingress to isolated database.</div>
+                    <div class="tier-port">Internal: Port 5000 (Protected)</div>
+                </div>
+
+                <div class="tier-card">
+                    <div class="tier-num">Tier 3 &mdash; Data Fortress</div>
+                    <div class="tier-title">PostgreSQL 16 Cluster</div>
+                    <div class="tier-desc">Strictly isolated inside backend bridge (internal: true). Zero direct route to outside internet; protected by persistent storage volume.</div>
+                    <div class="tier-port">Internal: Port 5432 (Isolated)</div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <strong>CloudNova Technologies Inc.</strong> &copy; 2026. Enterprise Cloud Infrastructure Platform.
+            </div>
+            <div>
+                Status: <span style="color: #34d399; font-weight: 700;">All Systems Operational</span> &bull; SLA: 99.999%
+            </div>
+        </div>
+    </footer>
 
     <script>
         function pingDatabase() {
-            const btn = document.querySelector('.btn-ping');
-            const statusText = document.getElementById('ping-text');
-            const checkTime = document.getElementById('check-time');
-            btn.textContent = 'Pinging...';
+            const btn = document.getElementById('btn-ping');
+            const pill = document.getElementById('db-status-pill');
+            const log = document.getElementById('ping-log');
+            btn.innerHTML = '<span>Pinging Database Engine...</span>';
             btn.disabled = true;
 
+            const t0 = performance.now();
             fetch('/health')
                 .then(res => res.json())
                 .then(data => {
-                    const now = new Date().toLocaleTimeString();
-                    statusText.innerHTML = `State: <strong style="color: #34d399;">${data.database.toUpperCase()} & ${data.status.toUpperCase()}</strong>`;
-                    checkTime.textContent = now;
-                    btn.textContent = 'Ping Success!';
+                    const elapsed = Math.round(performance.now() - t0);
+                    pill.textContent = data.database.toUpperCase();
+                    pill.style.color = '#34d399';
+                    btn.innerHTML = `<span>&#10003; PostgreSQL Healthy (${elapsed}ms)</span>`;
+                    log.textContent = `Last Healthcheck: ${new Date().toLocaleTimeString()} (HTTP 200 OK)`;
                     setTimeout(() => {
-                        btn.textContent = 'Ping Database';
+                        btn.innerHTML = '<span>Test PostgreSQL Ping</span>';
                         btn.disabled = false;
-                    }, 1200);
+                    }, 1500);
                 })
                 .catch(err => {
-                    statusText.innerHTML = `State: <strong style="color: #f87171;">ERROR: ${err.message}</strong>`;
-                    btn.textContent = 'Retry';
-                    btn.disabled = false;
+                    pill.textContent = 'UNAVAILABLE';
+                    pill.style.color = '#f87171';
+                    btn.innerHTML = `<span>Error: ${err.message}</span>`;
+                    setTimeout(() => {
+                        btn.innerHTML = '<span>Retry Ping</span>';
+                        btn.disabled = false;
+                    }, 2000);
                 });
+        }
+
+        // Run an initial ping on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            pingDatabase();
+        });
+
+        function handleProvision(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-workload');
+            const name = document.getElementById('wName').value.trim();
+            const tier = document.getElementById('wTier').value;
+            const region = document.getElementById('wRegion').value;
+            const ram = document.getElementById('wRam').value;
+
+            if (!name) return;
+
+            btn.disabled = true;
+            btn.innerHTML = '<span>Provisioning to PostgreSQL...</span>';
+
+            fetch('/api/workloads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, tier, region, ram })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Provisioning failed');
+                return res.json();
+            })
+            .then(data => {
+                btn.innerHTML = '<span>&#10003; Provisioned Successfully!</span>';
+                document.getElementById('wName').value = '';
+                setTimeout(() => {
+                    location.reload();
+                }, 700);
+            })
+            .catch(err => {
+                alert('Database Error: ' + err.message);
+                btn.disabled = false;
+                btn.innerHTML = '<span>⚡ Provision Enterprise Workload</span>';
+            });
         }
     </script>
 </body>
 </html>
 """
-
-def check_database():
-    conn = psycopg2.connect(
-        host=os.environ.get("DB_HOST", "db"),
-        dbname=os.environ.get("DB_NAME", "cloudapp"),
-        user=os.environ.get("DB_USER", "clouduser"),
-        password=os.environ.get("DB_PASSWORD", "CloudNovaSecurePass2026!"),
-        connect_timeout=3
-    )
-    try:
-        with conn.cursor() as cur:
-            cur.execute("SELECT 1")
-            return cur.fetchone()[0] == 1
-    finally:
-        conn.close()
 
 @app.route("/")
 def home():
@@ -589,23 +1059,22 @@ def home():
     except Exception:
         connected = False
 
-    # Return pure JSON for API clients / curl requests
     accept = request.headers.get("Accept", "")
     if "application/json" in accept or request.args.get("format") == "json":
         return jsonify({
-            "project": "Enterprise Cloud Infrastructure",
+            "project": "CloudNova Enterprise Cloud Platform",
             "application": "Flask",
             "server": socket.gethostname(),
             "database": "connected" if connected else "unavailable"
         }), 200 if connected else 503
 
-    # Render modern visual dashboard for web browsers
+    workloads = get_workloads()
     return render_template_string(
         HTML_TEMPLATE,
         server_hostname=socket.gethostname(),
-        db_name=os.environ.get("DB_NAME", "cloudapp"),
         check_time=datetime.now().strftime("%H:%M:%S UTC"),
-        is_connected=connected
+        is_connected=connected,
+        workloads=workloads
     ), 200 if connected else 503
 
 @app.route("/health")
@@ -615,6 +1084,37 @@ def health():
         return jsonify({"status": "healthy", "database": "connected"}), 200
     except Exception:
         return jsonify({"status": "unhealthy", "database": "unavailable"}), 503
+
+@app.route("/api/workloads", methods=["GET", "POST"])
+def api_workloads():
+    if request.method == "POST":
+        data = request.get_json(silent=True) or {}
+        name = data.get("name", "unnamed-workload").strip()
+        tier = data.get("tier", "Dedicated PostgreSQL Cluster")
+        region = data.get("region", "ap-southeast-manila")
+        ram = data.get("ram", "16 GB")
+        
+        try:
+            conn = get_db_connection()
+            with conn.cursor() as cur:
+                cur.execute(
+                    "INSERT INTO enterprise_workloads (name, tier, region, ram, status) VALUES (%s, %s, %s, %s, 'ONLINE') RETURNING id;",
+                    (name, tier, region, ram)
+                )
+                new_id = cur.fetchone()[0]
+                conn.commit()
+            conn.close()
+            return jsonify({"status": "created", "id": new_id, "name": name}), 201
+        except Exception as e:
+            return jsonify({"status": "error", "message": str(e)}), 500
+
+    # GET
+    rows = get_workloads()
+    workload_list = [
+        {"id": r[0], "name": r[1], "tier": r[2], "region": r[3], "ram": r[4], "status": r[5], "created_at": r[6]}
+        for r in rows
+    ]
+    return jsonify({"workloads": workload_list}), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
