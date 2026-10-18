@@ -719,7 +719,17 @@ HTML_TEMPLATE = """
     <nav>
         <div class="nav-inner">
             <a href="/" class="brand">
-                <div class="brand-logo">⚡</div>
+                <div class="brand-logo">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4C9.11 4 6.6 5.64 5.35 8.04C2.34 8.36 0 10.91 0 14C0 17.31 2.69 20 6 20H19C21.76 20 24 17.76 24 15C24 12.36 21.95 10.22 19.35 10.04Z" fill="url(#cloudGrad)"/>
+                        <defs>
+                            <linearGradient id="cloudGrad" x1="0" y1="4" x2="24" y2="20" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#ffffff"/>
+                                <stop offset="1" stop-color="#bae6fd"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
                 <div class="brand-name">Cloud<span>Nova</span> <small style="font-size: 0.65em; font-weight: 500; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; margin-left: 4px;">Enterprise</small></div>
             </a>
             <ul class="nav-links">
