@@ -12,8 +12,9 @@
 # A1. Connect to the Ubuntu server over SSH
 ssh carlo@192.168.100.52
 
-# A2. (open a 2nd PowerShell tab) Prove the web app answers through Nginx
-curl.exe http://192.168.100.52:8088
+# A2. (Open in Browser) Show the sleek CloudNova Enterprise Portal & live DB ping
+Start-Process "http://192.168.100.52:8088"
+# Or curl via terminal for API/health test:
 curl.exe http://192.168.100.52:8088/health
 
 # A3. Prove the firewall: 8088 and 22 are OPEN, 5432 and 5000 are BLOCKED
