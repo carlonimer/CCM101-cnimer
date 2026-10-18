@@ -36,7 +36,7 @@
     <strong>Project:</strong> Secure Multi-Tier Web Application<br>
     <strong>Application Stack:</strong> Nginx + Flask/Gunicorn + PostgreSQL 16<br>
     <strong>Prepared by:</strong> Carlo Nimer<br>
-    <strong>Section:</strong> BSIT 2A<br>
+    <strong>Section:</strong> BSIT - 4J<br>
     <strong>Instructor:</strong> Jenkielyn C. Torres<br>
     <strong>Date:</strong> October 2026<br>
     <br>

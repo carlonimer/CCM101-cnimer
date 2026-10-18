@@ -1,7 +1,7 @@
 # Cloud Computing Portfolio (CCM101)
 **Student Name:** Carlo Nimer  
 **Institution:** University of Eastern Pangasinan — College of Information Technology  
-**Program & Section:** Bachelor of Science in Information Technology (BSIT 2A)  
+**Program & Section:** Bachelor of Science in Information Technology (BSIT - 4J)  
 **Instructor:** Jenkielyn C. Torres  
 
 Welcome to my Cloud Computing Portfolio repository for **CCM101**. This portfolio showcases the hands-on laboratories, system blueprints, virtualization setups, containerized environments, security configurations, and automation scripts developed throughout the semester.

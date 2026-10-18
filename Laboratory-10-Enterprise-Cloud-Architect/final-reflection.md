@@ -1,7 +1,7 @@
 # Final Course Reflection: Journey of an Enterprise Cloud Architect
 **Student Name:** Carlo Nimer  
 **Course & Code:** CCM101 – Cloud Computing  
-**Section:** BSIT 2A  
+**Section:** BSIT - 4J  
 **Instructor:** Jenkielyn C. Torres  
 **Institution:** College of Information Technology, University of Eastern Pangasinan  
 **Date:** October 2026  

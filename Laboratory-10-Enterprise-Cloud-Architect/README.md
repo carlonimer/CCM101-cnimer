@@ -2,7 +2,7 @@
 **Course:** CCM101 – Cloud Computing  
 **Role:** Enterprise Cloud Architect (CloudNova Technologies)  
 **Architect:** Carlo Nimer  
-**Section:** BSIT 2A  
+**Section:** BSIT - 4J  
 **Instructor:** Jenkielyn C. Torres  
 **Institution:** University of Eastern Pangasinan — College of Information Technology  
 
