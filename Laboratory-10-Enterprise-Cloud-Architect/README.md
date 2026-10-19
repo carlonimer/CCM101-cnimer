@@ -44,7 +44,6 @@
 | **`architecture-diagram.png`** | Enterprise network topology diagram (Host $\rightarrow$ VirtualBox $\rightarrow$ Ubuntu $\rightarrow$ UFW $\rightarrow$ Nginx $\rightarrow$ Flask $\rightarrow$ PostgreSQL) | [View Diagram](architecture-diagram.png) |
 | **`docker-compose.yml`** | Production multi-tier Infrastructure-as-Code stack definition | [View File](docker-compose.yml) |
 | **`automation-script.sh`** | Autonomous PostgreSQL backup and rotation bash script | [View File](automation-script.sh) |
-| **`DEMO-COMMANDS.txt`** | Complete cheat-sheet of live defense commands for PowerShell & Ubuntu | [View Commands](DEMO-COMMANDS.txt) |
 | **`operational-manual.md`** | Comprehensive Client Handover Manual (Formatted for 5.5" x 8.5" Booklet) | [View Manual](operational-manual.md) |
 | **`final-reflection.md`** | Personal final reflection synthesizing journey from Mission 1 to 10 | [View Reflection](final-reflection.md) |
 | **`app/`** | Application tier source code (Flask app, Gunicorn, Dockerfile) | [Explore App](app/) |
