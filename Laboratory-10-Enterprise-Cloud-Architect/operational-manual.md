@@ -1,191 +1,24 @@
-<style>
-  @page {
-    size: 5.5in 8.5in;
-    margin: 0.45in;
-  }
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    font-size: 9pt;
-    line-height: 1.4;
-    color: #000000;
-    background: #ffffff;
-  }
-  h1 {
-    font-size: 13.5pt;
-    margin-top: 14pt;
-    margin-bottom: 6pt;
-    border-bottom: 1.5px solid #000000;
-    padding-bottom: 3pt;
-    color: #000000;
-    page-break-after: avoid;
-  }
-  h2 {
-    font-size: 11pt;
-    margin-top: 10pt;
-    margin-bottom: 4pt;
-    color: #000000;
-    page-break-after: avoid;
-  }
-  h3 {
-    font-size: 9.5pt;
-    margin-top: 8pt;
-    margin-bottom: 3pt;
-    color: #000000;
-    page-break-after: avoid;
-  }
-  p {
-    margin: 4pt 0 6pt 0;
-    color: #000000;
-  }
-  ul, ol {
-    margin: 4pt 0 6pt 16pt;
-    padding: 0;
-    color: #000000;
-  }
-  li {
-    margin-bottom: 2pt;
-    color: #000000;
-  }
-  code {
-    font-family: "Courier New", Courier, monospace;
-    font-size: 8pt;
-    background: #f4f4f4;
-    border: 1px solid #cccccc;
-    padding: 1px 3px;
-    border-radius: 3px;
-    color: #000000;
-  }
-  pre {
-    background: #ffffff;
-    border: 1px solid #333333;
-    color: #000000;
-    padding: 6pt 8pt;
-    border-radius: 4px;
-    overflow-x: auto;
-    font-size: 7.5pt;
-    line-height: 1.3;
-    margin: 5pt 0 7pt 0;
-    page-break-inside: avoid;
-  }
-  pre code {
-    background: transparent;
-    border: none;
-    padding: 0;
-    color: #000000;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 6pt 0 8pt 0;
-    font-size: 7.5pt;
-    page-break-inside: avoid;
-  }
-  th, td {
-    border: 1px solid #444444;
-    padding: 4pt 5pt;
-    text-align: left;
-    color: #000000;
-  }
-  th {
-    background-color: #f0f0f0;
-    font-weight: bold;
-    color: #000000;
-  }
-  .page-break {
-    page-break-after: always;
-  }
-  .cover-page {
-    text-align: center;
-    padding-top: 1.0in;
-    padding-bottom: 0.8in;
-  }
-  .cover-inst {
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: bold;
-    color: #000000;
-    font-size: 8pt;
-    line-height: 1.4;
-    margin-bottom: 14pt;
-  }
-  .cover-title {
-    font-size: 16pt;
-    font-weight: bold;
-    margin-bottom: 6pt;
-    color: #000000;
-  }
-  .cover-subtitle {
-    font-size: 11pt;
-    font-weight: bold;
-    color: #000000;
-    margin-bottom: 18pt;
-  }
-  .cover-divider {
-    width: 60%;
-    margin: 14pt auto;
-    border: 0;
-    border-top: 1.5px solid #000000;
-  }
-  .cover-meta {
-    font-size: 9pt;
-    line-height: 1.8;
-    margin-top: 24pt;
-    color: #000000;
-    text-align: center;
-  }
-  .cover-tag {
-    display: inline-block;
-    border: 1px solid #000000;
-    padding: 3pt 8pt;
-    margin-top: 16pt;
-    font-size: 7.5pt;
-    font-weight: bold;
-    color: #000000;
-  }
-  .callout-box {
-    border: 1px solid #000000;
-    background: #ffffff;
-    padding: 5pt 7pt;
-    margin: 6pt 0;
-    font-size: 8pt;
-    color: #000000;
-  }
-  img {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #333333;
-    margin: 4pt 0;
-  }
-</style>
+# UNIVERSITY OF EASTERN PANGASINAN
+### College of Information Technology
+**Department of Computer Studies • Bachelor of Science in Information Technology**
 
-<div class="cover-page">
-  <div class="cover-inst">
-    University of Eastern Pangasinan<br>
-    College of Information Technology
-  </div>
+---
 
-  <div class="cover-title">CCM101 - Cloud Computing</div>
-  <div class="cover-subtitle">Enterprise Cloud Architect – Operational Manual</div>
+# CCM101 - Cloud Computing
+## Enterprise Cloud Architect – Operational Manual
 
-  <hr class="cover-divider" />
+---
 
-  <div class="cover-meta">
-    <strong>Project:</strong> Secure Multi-Tier Web Application<br>
-    <strong>Application Stack:</strong> Python 3.12 Flask + PostgreSQL 16 + Nginx Alpine<br>
-    <strong>Prepared by:</strong> Carlo Nimer<br>
-    <strong>Section:</strong> BSIT - 4J<br>
-    <strong>Instructor:</strong> Jenkielyn C. Torres<br>
-    <strong>Date:</strong> October 2026<br>
-    <div class="cover-tag">
-      SIZE: Coupon 5.5 x 8.5 Operational Manual (Portrait)
-    </div>
-  </div>
-</div>
+**Project:** Secure Multi-Tier Web Application  
+**Application Stack:** Python 3.12 Flask + PostgreSQL 16 + Nginx Alpine  
+**Prepared by:** Carlo Nimer  
+**Section:** BSIT - 4J  
+**Instructor:** Jenkielyn C. Torres  
+**Date:** October 2026  
 
-<div class="page-break"></div>
+> **FORMAT SPECIFICATION:** Coupon 5.5 x 8.5 Operational Manual (Portrait)
+
+---
 
 # Document Overview
 
@@ -223,8 +56,6 @@ In this lab, I took on the role of an Enterprise Cloud Architect for CloudNova T
 
 ---
 
-<div class="page-break"></div>
-
 # 1. Mission Brief & Core Architecture
 
 ### 1.1 The Challenge
@@ -242,8 +73,6 @@ To meet these requirements, I built a modular 3-tier microservices architecture:
 5. **Host Hardening:** The Ubuntu Server operating system runs Uncomplicated Firewall (UFW) with a Default Deny rule, only opening port 22 for SSH management and port 8088 for the web application.
 
 ---
-
-<div class="page-break"></div>
 
 # 2. Base Infrastructure & VM Provisioning
 
@@ -285,8 +114,6 @@ df -h /
 
 ---
 
-<div class="page-break"></div>
-
 # 3. Network Topology & Port Mapping
 
 ### 3.1 Visual Blueprint
@@ -311,8 +138,6 @@ df -h /
 7. **Response Delivery:** Flask generates the JSON or HTML response, returns it to Nginx, and Nginx delivers it back to the browser.
 
 ---
-
-<div class="page-break"></div>
 
 # 4. Multi-Tier Application Deployment (Docker Compose)
 
@@ -406,8 +231,6 @@ docker compose ps
 
 ---
 
-<div class="page-break"></div>
-
 # 5. Host Security & Firewall Hardening (UFW)
 
 ### 5.1 Host-Based Security Policy (Requirement 3)
@@ -436,9 +259,7 @@ sudo ufw --force enable
 sudo ufw status verbose
 ```
 
-<div class="callout-box">
-  <strong>IMPORTANT SAFETY NOTE:</strong> Always run <code>sudo ufw allow 22/tcp</code> before running <code>sudo ufw enable</code>. If you enable UFW with default-deny without allowing port 22 first, your SSH session will immediately disconnect and you will lock yourself out of the headless server.
-</div>
+> **IMPORTANT SAFETY NOTE:** Always run `sudo ufw allow 22/tcp` before running `sudo ufw enable`. If you enable UFW with default-deny without allowing port 22 first, your SSH session will immediately disconnect and you will lock yourself out of the headless server.
 
 ### 5.3 Proving Port Isolation
 To prove to the instructor that internal ports are not exposed:
@@ -449,8 +270,6 @@ sudo ss -tulpn | grep -E '22|8088|5000|5432'
 ```
 
 ---
-
-<div class="page-break"></div>
 
 # 6. Operational Automation & Backup Engineering
 
@@ -541,8 +360,6 @@ sudo systemctl status cron --no-pager
 
 ---
 
-<div class="page-break"></div>
-
 # 7. Disaster Recovery & Non-Destructive Restore Runbook
 
 ### 7.1 Recovery Strategy
@@ -574,13 +391,9 @@ docker compose exec -T db psql -U postgres -c "DROP DATABASE cloudapp_restore_te
 echo "Disaster recovery verification successful."
 ```
 
-<div class="callout-box">
-  <strong>Rule of Thumb:</strong> Never restore directly into the active database (<code>cloudapp</code>) during a live demo or routine health audit. Always use a temporary staging database to verify recovery.
-</div>
+> **Rule of Thumb:** Never restore directly into the active database (`cloudapp`) during a live demo or routine health audit. Always use a temporary staging database to verify recovery.
 
 ---
-
-<div class="page-break"></div>
 
 # 8. System Observability & Verification Test Plan
 
@@ -609,8 +422,6 @@ docker compose logs --tail=50 app
 
 ---
 
-<div class="page-break"></div>
-
 # 9. Troubleshooting Guide
 
 | Issue / Error | Probable Root Cause | How to Diagnose | Solution / Fix |
@@ -623,8 +434,6 @@ docker compose logs --tail=50 app
 | **Backup Integrity Fails (`gzip -t`)** | Virtual disk is full or dump was interrupted | Run `df -h /`<br>Check `dmesg \| tail -n 20` | Free up disk space on root filesystem and re-run backup script |
 
 ---
-
-<div class="page-break"></div>
 
 # 10. Standard Operating Procedures (SOPs)
 
@@ -658,13 +467,10 @@ docker compose down
 # Shutdown the virtual machine
 sudo shutdown -h now
 ```
-<div class="callout-box">
-  <strong>WARNING:</strong> Never add the <code>-v</code> flag to <code>docker compose down</code> unless you intentionally want to delete all stored database volumes.
-</div>
+
+> **WARNING:** Never add the `-v` flag to `docker compose down` unless you intentionally want to delete all stored database volumes.
 
 ---
-
-<div class="page-break"></div>
 
 # 11. Live Defense & KillerCoda Deployment Script
 
@@ -714,8 +520,6 @@ Test-NetConnection -ComputerName 192.168.100.52 -Port 5432   # Output: TcpTestSu
 
 ---
 
-<div class="page-break"></div>
-
 # 12. Final Reflection & Academic Integrity
 
 ### 12.1 Academic Integrity Policy
@@ -737,8 +541,6 @@ Looking back from **Mission 1** (learning basic Linux navigation, file permissio
 These practical skills—Linux administration, container orchestration, Infrastructure as Code, network security, and disaster recovery scripting—give me a strong foundation for future coursework and a career in Cloud Computing, DevOps, and Systems Administration.
 
 ---
-
-<div class="page-break"></div>
 
 # Appendices: Master Inventory & Command Reference
 
