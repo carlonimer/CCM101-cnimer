@@ -7,8 +7,6 @@
 # CCM101 - Cloud Computing
 ## Enterprise Cloud Architect – Operational Manual
 
----
-
 **Project:** Secure Multi-Tier Web Application  
 **Application Stack:** Python 3.12 Flask + PostgreSQL 16 + Nginx Alpine  
 **Prepared by:** Carlo Nimer | John Earl Valdez
