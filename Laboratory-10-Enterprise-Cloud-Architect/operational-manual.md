@@ -542,7 +542,7 @@ These practical skills—Linux administration, container orchestration, Infrastr
 
 ---
 
-# Appendices: Master Inventory & Command Reference
+# Appendices: Inventory & Command Reference
 
 ### Appendix A: Important Directory Paths
 - **Project Root Directory:** `/home/carlo/enterprise-cloud/`
@@ -553,7 +553,7 @@ These practical skills—Linux administration, container orchestration, Infrastr
 - **PostgreSQL Volume Mount:** `/var/lib/postgresql/data` (`postgres_data`)
 - **Automated Backup Script:** `/home/carlo/enterprise-cloud/scripts/backup-db.sh`
 
-### Appendix B: Quick Command Cheat Sheet
+### Appendix B: Quick Command 
 ```bash
 # Start infrastructure
 docker compose up -d
