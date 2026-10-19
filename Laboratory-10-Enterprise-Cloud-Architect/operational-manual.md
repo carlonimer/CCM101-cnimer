@@ -1,88 +1,177 @@
 <style>
   @page {
     size: 5.5in 8.5in;
-    margin: 0.5in;
+    margin: 0.45in;
+  }
+  * {
+    box-sizing: border-box;
   }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 9.5pt;
-    line-height: 1.45;
-    color: #1a1a1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 9pt;
+    line-height: 1.4;
+    color: #000000;
+    background: #ffffff;
   }
-  h1 { font-size: 15pt; margin-top: 1.2em; border-bottom: 2px solid #2563eb; padding-bottom: 4px; color: #0f172a; page-break-after: avoid; }
-  h2 { font-size: 12pt; margin-top: 1em; color: #1e3a8a; page-break-after: avoid; }
-  h3 { font-size: 10.5pt; margin-top: 0.8em; color: #334155; page-break-after: avoid; }
-  code { font-family: "Courier New", Courier, monospace; font-size: 8.5pt; background: #f1f5f9; padding: 2px 4px; border-radius: 4px; }
-  pre { background: #0f172a; color: #f8fafc; padding: 8px 10px; border-radius: 6px; overflow-x: auto; font-size: 7.5pt; line-height: 1.35; }
-  table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 8pt; }
-  th, td { border: 1px solid #cbd5e1; padding: 5px 6px; text-align: left; }
-  th { background-color: #f1f5f9; color: #0f172a; font-weight: 600; }
-  .page-break { page-break-after: always; }
+  h1 {
+    font-size: 13.5pt;
+    margin-top: 14pt;
+    margin-bottom: 6pt;
+    border-bottom: 1.5px solid #000000;
+    padding-bottom: 3pt;
+    color: #000000;
+    page-break-after: avoid;
+  }
+  h2 {
+    font-size: 11pt;
+    margin-top: 10pt;
+    margin-bottom: 4pt;
+    color: #000000;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 9.5pt;
+    margin-top: 8pt;
+    margin-bottom: 3pt;
+    color: #000000;
+    page-break-after: avoid;
+  }
+  p {
+    margin: 4pt 0 6pt 0;
+    color: #000000;
+  }
+  ul, ol {
+    margin: 4pt 0 6pt 16pt;
+    padding: 0;
+    color: #000000;
+  }
+  li {
+    margin-bottom: 2pt;
+    color: #000000;
+  }
+  code {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 8pt;
+    background: #f4f4f4;
+    border: 1px solid #cccccc;
+    padding: 1px 3px;
+    border-radius: 3px;
+    color: #000000;
+  }
+  pre {
+    background: #ffffff;
+    border: 1px solid #333333;
+    color: #000000;
+    padding: 6pt 8pt;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 7.5pt;
+    line-height: 1.3;
+    margin: 5pt 0 7pt 0;
+    page-break-inside: avoid;
+  }
+  pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #000000;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6pt 0 8pt 0;
+    font-size: 7.5pt;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #444444;
+    padding: 4pt 5pt;
+    text-align: left;
+    color: #000000;
+  }
+  th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    color: #000000;
+  }
+  .page-break {
+    page-break-after: always;
+  }
   .cover-page {
     text-align: center;
-    padding-top: 1.2in;
-    padding-bottom: 1.2in;
+    padding-top: 1.0in;
+    padding-bottom: 0.8in;
   }
-  .cover-institution {
+  .cover-inst {
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     font-weight: bold;
-    color: #64748b;
-    font-size: 8.5pt;
-    margin-bottom: 12px;
+    color: #000000;
+    font-size: 8pt;
+    line-height: 1.4;
+    margin-bottom: 14pt;
   }
   .cover-title {
-    font-size: 18pt;
-    font-weight: 800;
-    margin-bottom: 8px;
-    color: #0f172a;
+    font-size: 16pt;
+    font-weight: bold;
+    margin-bottom: 6pt;
+    color: #000000;
   }
   .cover-subtitle {
-    font-size: 13pt;
-    color: #2563eb;
-    font-weight: 600;
-    margin-bottom: 24px;
+    font-size: 11pt;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 18pt;
   }
   .cover-divider {
     width: 60%;
-    margin: 20px auto;
+    margin: 14pt auto;
     border: 0;
-    border-top: 2px solid #2563eb;
+    border-top: 1.5px solid #000000;
   }
   .cover-meta {
-    font-size: 9.5pt;
-    line-height: 1.85;
-    margin-top: 30px;
-    color: #334155;
+    font-size: 9pt;
+    line-height: 1.8;
+    margin-top: 24pt;
+    color: #000000;
     text-align: center;
   }
-  .notice-box {
-    background-color: #eff6ff;
-    border-left: 4px solid #2563eb;
-    padding: 8px 12px;
-    margin: 10px 0;
-    font-size: 8.5pt;
+  .cover-tag {
+    display: inline-block;
+    border: 1px solid #000000;
+    padding: 3pt 8pt;
+    margin-top: 16pt;
+    font-size: 7.5pt;
+    font-weight: bold;
+    color: #000000;
   }
-  .warning-box {
-    background-color: #fffbeb;
-    border-left: 4px solid #f59e0b;
-    padding: 8px 12px;
-    margin: 10px 0;
-    font-size: 8.5pt;
+  .callout-box {
+    border: 1px solid #000000;
+    background: #ffffff;
+    padding: 5pt 7pt;
+    margin: 6pt 0;
+    font-size: 8pt;
+    color: #000000;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #333333;
+    margin: 4pt 0;
   }
 </style>
 
 <div class="cover-page">
-  <div class="cover-institution">
+  <div class="cover-inst">
     University of Eastern Pangasinan<br>
     College of Information Technology
   </div>
-  
+
   <div class="cover-title">CCM101 - Cloud Computing</div>
   <div class="cover-subtitle">Enterprise Cloud Architect – Operational Manual</div>
-  
+
   <hr class="cover-divider" />
-  
+
   <div class="cover-meta">
     <strong>Project:</strong> Secure Multi-Tier Web Application<br>
     <strong>Application Stack:</strong> Python 3.12 Flask + PostgreSQL 16 + Nginx Alpine<br>
@@ -90,139 +179,145 @@
     <strong>Section:</strong> BSIT - 4J<br>
     <strong>Instructor:</strong> Jenkielyn C. Torres<br>
     <strong>Date:</strong> October 2026<br>
-    <br>
-    <span style="display: inline-block; border: 1px dashed #64748b; padding: 4px 10px; border-radius: 4px; font-size: 8pt; color: #475569;">
-      <strong>SIZE:</strong> Coupon 5.5 x 8.5 Operational Manual (Portrait)
-    </span>
+    <div class="cover-tag">
+      SIZE: Coupon 5.5 x 8.5 Operational Manual (Portrait)
+    </div>
   </div>
 </div>
 
 <div class="page-break"></div>
 
-# Document Control & System Specifications
+# Document Overview
 
-This operational manual delivers the comprehensive architectural, deployment, perimeter hardening, and disaster recovery specifications for the **Enterprise Cloud Infrastructure** final requirement (Mission 10) in **CCM101 (Cloud Computing)**. The system is designed to fulfill simulated enterprise specifications for CloudNova Technologies under the executive direction of CEO Jen Torres.
+This operational manual is the complete technical documentation for my final requirement in **CCM101 (Cloud Computing)**, titled **Mission 10: The Enterprise Cloud Architect**. 
 
-### Document Revision History
-| Version | Date | Author | Designation / Section | Change Summary |
-| :---: | :---: | :---: | :---: | :--- |
-| **1.0** | October 18, 2026 | **Carlo Nimer** | Enterprise Cloud Architect (BSIT-4J) | Initial release: Full architecture, deployment, security & runbooks |
+In this lab, I took on the role of an Enterprise Cloud Architect for CloudNova Technologies under simulated CEO Jen Torres. The objective was to design, deploy, secure, automate, and document a sovereign, multi-tier web application stack running on a local Linux virtual machine, completely from scratch without guided tutorials.
+
+### Document Control
+| Field | Details |
+| :--- | :--- |
+| **Document Title** | Enterprise Cloud Architect – Operational Manual |
+| **Author** | Carlo Nimer (Fourth Year – BSIT-4J) |
+| **Course & Code** | CCM101 – Cloud Computing |
+| **Instructor** | Jenkielyn C. Torres |
+| **Institution** | University of Eastern Pangasinan (College of Information Technology) |
+| **Version** | 1.0 (Final Complete Release) |
+| **Submission Date** | October 2026 |
 
 ---
 
 # Table of Contents
-1. [Executive Briefing & Core Architecture Principles](#1-executive-briefing--core-architecture-principles)
-2. [Base Infrastructure & Virtual Machine Provisioning](#2-base-infrastructure--virtual-machine-provisioning)
-3. [Network Topology & Port Map](#3-network-topology--port-map)
-4. [Multi-Tier Container Orchestration (IaC)](#4-multi-tier-container-orchestration-iac)
-5. [Host-Based Perimeter Security Hardening (UFW)](#5-host-based-perimeter-security-hardening-ufw)
+1. [Mission Brief & Core Architecture](#1-mission-brief--core-architecture)
+2. [Base Infrastructure & VM Provisioning](#2-base-infrastructure--vm-provisioning)
+3. [Network Topology & Port Mapping](#3-network-topology--port-mapping)
+4. [Multi-Tier Application Deployment (Docker Compose)](#4-multi-tier-application-deployment-docker-compose)
+5. [Host Security & Firewall Hardening (UFW)](#5-host-security--firewall-hardening-ufw)
 6. [Operational Automation & Backup Engineering](#6-operational-automation--backup-engineering)
-7. [Non-Destructive Disaster Recovery & Restoration](#7-non-destructive-disaster-recovery--restoration)
-8. [Application Testing, Telemetry & Observability](#8-application-testing-telemetry--observability)
-9. [Enterprise Troubleshooting Runbook](#9-enterprise-troubleshooting-runbook)
+7. [Disaster Recovery & Non-Destructive Restore Runbook](#7-disaster-recovery--non-destructive-restore-runbook)
+8. [System Observability & Verification Test Plan](#8-system-observability--verification-test-plan)
+9. [Troubleshooting Guide](#9-troubleshooting-guide)
 10. [Standard Operating Procedures (SOPs)](#10-standard-operating-procedures-sops)
-11. [Live Defense & KillerCoda Deployment Guide](#11-live-defense--killercoda-deployment-guide)
-12. [Academic Integrity & Architecture Synthesis](#12-academic-integrity--architecture-synthesis)
-* [Appendices: Reference Specifications & Glossary](#appendices-reference-specifications--glossary)
+11. [Live Defense & KillerCoda Deployment Script](#11-live-defense--killercoda-deployment-script)
+12. [Final Reflection & Academic Integrity](#12-final-reflection--academic-integrity)
+* [Appendices: Master Inventory & Command Reference](#appendices-master-inventory--command-reference)
 
 ---
 
 <div class="page-break"></div>
 
-# 1. Executive Briefing & Core Architecture Principles
+# 1. Mission Brief & Core Architecture
 
-### 1.1 The Enterprise Mission Brief
-> *"We just signed a blank-check contract with a Fortune 500 company. They need a highly secure, automated, and observable private cloud environment. I don't care which web application stack you use, but it must be multi-tier, it must be secure, and it must manage its own backups. I am not giving you a tutorial. You are the Architect now. Build the system, document the operational manual, and prepare to present your infrastructure to me live. If the servers crash during your demo, or if I can bypass your firewall, we lose the client. Do not let me down."*  
-> — **Jen Torres, CEO of CloudNova Technologies**
+### 1.1 The Challenge
+The scenario for Mission 10 was set by CEO Jen Torres:
+> *"We just signed a blank-check contract with a Fortune 500 company. They need a highly secure, automated, and observable private cloud environment. I don't care which web application stack you use, but it must be multi-tier, it must be secure, and it must manage its own backups. I am not giving you a tutorial. You are the Architect now. Build the system, document the operational manual, and prepare to present your infrastructure to me live. If the servers crash during your demo, or if I can bypass your firewall, we lose the client. Do not let me down."*
 
-### 1.2 Five Foundational Architectural Pillars
-The infrastructure is engineered upon five core principles satisfying all Mission 10 requirements:
-1. **Decoupled 3-Tier Topology:** Clean functional separation across Presentation (Nginx), Application Logic (Python Flask/Gunicorn), and Data Persistence (PostgreSQL 16).
-2. **Zero-Trust Network Segmentation:** Dual Docker bridge networks (`frontend` and `backend`). The database is strictly isolated on the backend network with zero public port publishing and no outbound external internet route (`internal: true`).
-3. **Storage Decoupling & Absolute Persistence:** Database state resides on a named Docker volume (`postgres_data`) decoupled from compute runtimes, surviving container replacement, image upgrades, and physical VM reboots.
-4. **Perimeter Defense-in-Depth:** Ubuntu Server host firewall enforces a **Default Deny** ingress policy, allowing only authenticated SSH (port 22) and public web entry (port 8088).
-5. **Autonomous Disaster Recovery:** Scheduled cron automation triggering compressed, cryptographically verified database dumps (`automation-script.sh`) with automated 7-day snapshot retention pruning.
-
-<div class="notice-box">
-  <strong>Scope Clarification:</strong> This private cloud represents a single-tenant sovereign environment operating locally under VirtualBox on physical hardware. It demonstrates enterprise cloud design patterns within a localized virtualization boundary.
-</div>
+### 1.2 Architectural Decisions
+To meet these requirements, I built a modular 3-tier microservices architecture:
+1. **Presentation Tier (Reverse Proxy):** An Nginx Alpine container exposed on host port `8088`. It acts as the single point of entry for user web traffic, handling requests and proxying them to the application.
+2. **Application Tier (Backend Logic):** A Python 3.12 Flask web application served by Gunicorn WSGI running on internal port `5000`. It processes incoming requests and interfaces with the database.
+3. **Database Tier (Persistence):** A PostgreSQL 16 Alpine database listening strictly on internal port `5432`. It is stored in a dedicated Docker named volume (`postgres_data`) so that records remain completely intact across container rebuilds and VM reboots.
+4. **Network Segmentation:** Two separate Docker bridge networks:
+   - `frontend`: connects Nginx and Flask.
+   - `backend`: connects Flask and PostgreSQL. It is marked `internal: true`, so the database has zero access to or from the public internet.
+5. **Host Hardening:** The Ubuntu Server operating system runs Uncomplicated Firewall (UFW) with a Default Deny rule, only opening port 22 for SSH management and port 8088 for the web application.
 
 ---
 
 <div class="page-break"></div>
 
-# 2. Base Infrastructure & Virtual Machine Provisioning
+# 2. Base Infrastructure & VM Provisioning
 
-### 2.1 Hardware & Hypervisor Specifications (Requirement 1)
-| Layer | Specification | Operational Role |
+### 2.1 Hardware and Hypervisor Setup (Requirement 1)
+The infrastructure runs on a Type-2 hypervisor hosted on my physical laptop:
+
+| Layer | Component / Specification | Purpose |
 | :--- | :--- | :--- |
-| **Physical Workstation** | Lenovo LOQ (Windows 11 Home) | Physical Type-2 Hypervisor host machine |
-| **Type-2 Hypervisor** | Oracle VM VirtualBox 7.x | Hardware virtualization layer |
-| **Guest Virtual Machine** | Ubuntu Server 24.04 LTS (Headless) | Enterprise container hosting platform (`ubuntu-docker`) |
-| **Assigned VM Compute** | 2 vCPUs, 4096 MB RAM | Dedicated workload resource envelope |
-| **Assigned VM Storage** | 30 GB VDI Dynamically Allocated | ext4 root filesystem (`/dev/sda3`) |
-| **Network Adapter** | Bridged Adapter (Realtek Wi-Fi) | Obtains dedicated LAN IP via router DHCP |
+| **Physical Host** | Lenovo LOQ Laptop (Windows 11 Home) | Hardware running the hypervisor |
+| **Hypervisor** | Oracle VM VirtualBox 7.x | Runs the guest Linux virtual machine |
+| **Guest OS** | Ubuntu Server 24.04 LTS (Headless) | Dedicated operating system for containers |
+| **VM Resources** | 2 vCPUs, 4096 MB RAM, 30 GB VDI Storage | Sized to run Docker workloads smoothly |
+| **Network Mode** | Bridged Adapter (Realtek Wi-Fi) | Obtains a dedicated IP from my home router |
 
-### 2.2 Host vs. Guest Resource Separation Audit
-To verify resource boundaries prior to deployment, execute the following audit commands:
+### 2.2 Why Bridged Networking?
+I chose Bridged Networking instead of NAT so that my Ubuntu virtual machine receives its own local IP address (`192.168.100.52`) directly from the router. This allows me to:
+- Connect directly from my Windows 11 host using PowerShell over SSH (`ssh carlo@192.168.100.52`).
+- Open my host web browser (Chrome/Edge) and access the web application at `http://192.168.100.52:8088` without needing port forwarding rules in VirtualBox.
 
+### 2.3 Verification Commands
 **From Windows PowerShell (Host OS):**
 ```powershell
-# Audit physical hardware capacity
+# Check host system specs
 Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion, OsArchitecture
 Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores, NumberOfLogicalProcessors
-Get-CimInstance Win32_ComputerSystem | Select-Object @{N="PhysicalRAM_GB";E={[math]::Round($_.TotalPhysicalMemory/1GB,2)}}
+Get-CimInstance Win32_ComputerSystem | Select-Object @{N="RAM_GB";E={[math]::Round($_.TotalPhysicalMemory/1GB,2)}}
 Get-Command ssh
 ```
 
-**From Ubuntu Terminal via SSH (Guest OS):**
+**From Ubuntu Terminal (Guest OS via SSH):**
 ```bash
-# Verify guest resource envelope
+# Check guest virtual machine resources
 hostnamectl
 hostname -I
-lscpu | grep -E 'Model name|CPU\(s\):|Thread|Core'
+lscpu | grep -E 'Model name|CPU\(s\):'
 free -h
 df -h /
-swapon --show
 ```
 
 ---
 
 <div class="page-break"></div>
 
-# 3. Network Topology & Port Map
+# 3. Network Topology & Port Mapping
 
-### 3.1 Network Architecture Diagram
+### 3.1 Visual Blueprint
 
-![Enterprise Cloud Architecture](architecture-diagram.png)
+![Enterprise Cloud Architecture Diagram](architecture-diagram.png)
 
-### 3.2 Master Port Allocation & Security Matrix
-| Component / Service | Tier | Bound IP & Port | Network Isolation Policy |
+### 3.2 Port Allocation and Security Matrix
+| Port / Protocol | Service | Bound Interface | Security Policy |
 | :--- | :--- | :--- | :--- |
-| **Windows Workstation** | Host Admin | `192.168.100.46` | Out-of-band management via PowerShell |
-| **SSH Management** | Host OS | `192.168.100.52:22` | Restricted administrative ingress via UFW |
-| **Nginx Reverse Proxy** | Tier 1 (Presentation) | `0.0.0.0:8088 -> 80/tcp` | Public HTTP ingress entrypoint |
-| **Flask Application** | Tier 2 (Application) | Internal `app:5000` | Bridge network only; NO host binding |
-| **PostgreSQL 16 DB** | Tier 3 (Database) | Internal `db:5432` | `internal: true` backend network only |
+| **22/tcp** | OpenSSH Server | Host OS (`0.0.0.0:22`) | Allowed in UFW for remote admin |
+| **8088/tcp** | Nginx Web Ingress | Host OS (`0.0.0.0:8088`) | Allowed in UFW; forwarded to Nginx :80 |
+| **5000/tcp** | Flask App (Gunicorn) | Internal Docker Network | Blocked externally; internal only |
+| **5432/tcp** | PostgreSQL Database | Internal Backend Network | Blocked externally; internal only |
 
-### 3.3 Traffic Flow Breakdown (8-Step Connection Lifecycle)
-1. **Client Ingress:** Client requests `http://192.168.100.52:8088` from host browser.
-2. **Firewall Inspection:** UFW permits incoming packets targeting port 8088/tcp.
-3. **Port Forwarding:** Docker userland proxy forwards host port 8088 to Nginx port 80.
-4. **Reverse Proxy Processing:** Nginx inspects request headers and proxies to `http://app:5000` across the `frontend` bridge.
-5. **WSGI Execution:** Gunicorn delegates request to Python Flask application workers.
-6. **Isolated DB Query:** Flask queries PostgreSQL at `db:5432` across the isolated `backend` network via `psycopg2`.
-7. **Persistent State Retrieval:** PostgreSQL reads/writes data to `/var/lib/postgresql/data` backed by the `postgres_data` Docker volume.
-8. **Client Response:** Response streams back through Nginx to the client browser in under 15ms.
+### 3.3 Traffic Flow (How a Request Moves Through the System)
+1. **User Request:** The browser on my Windows laptop sends an HTTP GET request to `http://192.168.100.52:8088`.
+2. **Firewall Filter:** The Ubuntu host UFW firewall inspects the packet and allows it through port 8088.
+3. **Nginx Reverse Proxy:** Docker forwards port 8088 into the Nginx container on port 80. Nginx reads the request and proxies it across the `frontend` bridge network to `http://app:5000`.
+4. **Flask Application:** Gunicorn passes the request to the Flask application.
+5. **Database Query:** If the endpoint requires data, Flask makes an internal database query to `db:5432` across the isolated `backend` network using `psycopg2`.
+6. **Persistent Data:** PostgreSQL reads from the `/var/lib/postgresql/data` directory mounted to the `postgres_data` volume.
+7. **Response Delivery:** Flask generates the JSON or HTML response, returns it to Nginx, and Nginx delivers it back to the browser.
 
 ---
 
 <div class="page-break"></div>
 
-# 4. Multi-Tier Container Orchestration (IaC)
+# 4. Multi-Tier Application Deployment (Docker Compose)
 
-### 4.1 Production `docker-compose.yml` (Requirement 2)
-The complete multi-tier cloud environment is declared as code:
+### 4.1 Infrastructure as Code (`docker-compose.yml` - Requirement 2)
+The entire multi-container stack is defined in `docker-compose.yml`. This allows the full environment to be started, stopped, or rebuilt with a single command.
 
 ```yaml
 services:
@@ -291,59 +386,66 @@ volumes:
   postgres_data:
 ```
 
-### 4.2 Stack Deployment Commands
+### 4.2 Key Features in this Configuration
+- **Three Linked Containers:** Nginx depends on App, and App depends on DB being healthy.
+- **Health Checks:** PostgreSQL has an automated `pg_isready` health check. The Flask app will not start until the database is ready to accept connections.
+- **Resource Constraints:** Memory limits (`mem_limit`) prevent any single container from exhausting host RAM.
+- **State Persistence:** The `postgres_data` volume ensures that if the database container is destroyed or upgraded, all records remain intact.
+
+### 4.3 Deployment Commands
 ```bash
-# 1. Enter project working directory
+# Move into the project directory
 cd /home/carlo/enterprise-cloud
 
-# 2. Deploy services in detached mode with automated build
+# Start all services in the background with fresh container builds
 docker compose up -d --build
 
-# 3. Verify running containers and health states
+# Check status of running containers
 docker compose ps
-docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
 ```
 
 ---
 
 <div class="page-break"></div>
 
-# 5. Host-Based Perimeter Security Hardening (UFW)
+# 5. Host Security & Firewall Hardening (UFW)
 
-### 5.1 Host Firewall Policy (Requirement 3)
-The host operating system enforces a strict Zero-Trust network boundary:
-- **Default Deny Incoming:** All unsolicited inbound traffic is dropped.
-- **Default Allow Outbound:** System packages and base container images can be fetched.
-- **Explicit Port Allowlist:** Only Port 22 (SSH) and Port 8088 (Web Application) are permitted.
-- **Database & Application Isolation:** Ports 5000 and 5432 have zero host bindings and are blocked from external inspection.
+### 5.1 Host-Based Security Policy (Requirement 3)
+Docker manipulates iptables directly, which means simply not mapping a port in Docker Compose is good, but securing the host operating system with UFW is critical.
 
-### 5.2 Hardening Execution Script
+I implemented a **Default Deny** security policy:
+- Drop all unsolicited incoming packets.
+- Allow outbound connections so the VM can install updates and pull base images.
+- Whitelist only SSH (port 22) and Web Traffic (port 8088).
+- Keep database port 5432 and app port 5000 completely off the host network.
+
+### 5.2 Step-by-Step Firewall Configuration
 ```bash
-# Reset and define baseline policies
+# 1. Set baseline rules
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 
-# Allow necessary administration and web ingress
-sudo ufw allow 22/tcp comment 'SSH Remote Administration'
-sudo ufw allow 8088/tcp comment 'CloudNova Nginx Web Entrypoint'
+# 2. Open only the required ports
+sudo ufw allow 22/tcp comment 'SSH Administration'
+sudo ufw allow 8088/tcp comment 'CloudNova Web Entrypoint'
 
-# Activate firewall
+# 3. Enable the firewall
 sudo ufw --force enable
 
-# Audit active status and verbose rules
+# 4. Confirm active rules
 sudo ufw status verbose
 ```
 
-<div class="warning-box">
-  <strong>CRITICAL HARDENING NOTICE:</strong> Always execute <code>sudo ufw allow 22/tcp</code> BEFORE enabling UFW. Enabling a Default Deny firewall without whitelisting SSH will immediately terminate active management sessions and cause administrative lockout.
+<div class="callout-box">
+  <strong>IMPORTANT SAFETY NOTE:</strong> Always run <code>sudo ufw allow 22/tcp</code> before running <code>sudo ufw enable</code>. If you enable UFW with default-deny without allowing port 22 first, your SSH session will immediately disconnect and you will lock yourself out of the headless server.
 </div>
 
-### 5.3 Host Port Exposure Audit
-Confirm that internal container ports are NOT exposed on host interfaces:
+### 5.3 Proving Port Isolation
+To prove to the instructor that internal ports are not exposed:
 ```bash
-# Audit listening ports on host OS
+# Check listening ports on the Ubuntu server
 sudo ss -tulpn | grep -E '22|8088|5000|5432'
-# Expected: Only ports 22 and 8088 appear. Ports 5000 and 5432 must NOT listen on 0.0.0.0.
+# Result: Only 22 and 8088 are listening publicly. Ports 5000 and 5432 do not appear.
 ```
 
 ---
@@ -352,27 +454,40 @@ sudo ss -tulpn | grep -E '22|8088|5000|5432'
 
 # 6. Operational Automation & Backup Engineering
 
-### 6.1 Autonomous Backup Engine (`automation-script.sh` - Requirement 4)
-The enterprise database backup engine automates state snapshots, gzip compression, cryptographic validation, and 7-day retention pruning:
+### 6.1 Custom Backup Script (`automation-script.sh` - Requirement 4)
+To ensure the infrastructure manages itself autonomously, I wrote a Bash shell script that runs non-blocking database dumps, compresses them, validates the file for corruption, and deletes old backups:
 
 ```bash
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# Dynamic project directory resolution (works locally and in KillerCoda)
+# Find project directory (works locally and in KillerCoda)
 PROJECT_DIR="${PROJECT_DIR:-/home/carlo/enterprise-cloud}"
 if [ ! -d "$PROJECT_DIR" ]; then
-    PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    if [ -f "$SCRIPT_DIR/docker-compose.yml" ]; then
+        PROJECT_DIR="$SCRIPT_DIR"
+    elif [ -f "$SCRIPT_DIR/../docker-compose.yml" ]; then
+        PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+    else
+        PROJECT_DIR="$(pwd)"
+    fi
 fi
+
 cd "$PROJECT_DIR"
 umask 077
 
 BACKUP_DIR="$PROJECT_DIR/backups"
 mkdir -p "$BACKUP_DIR"
 
-set -a
-source .env
-set +a
+if [ -f ".env" ]; then
+    set -a
+    source .env
+    set +a
+fi
+
+DB_USER="${DB_USER:-clouduser}"
+DB_NAME="${DB_NAME:-cloudapp}"
 
 TIMESTAMP="$(date +%Y%m%d_%H%M%S)"
 BACKUP_FILE="$BACKUP_DIR/cloudapp_${TIMESTAMP}.sql.gz"
@@ -383,43 +498,42 @@ cleanup() {
 }
 trap cleanup EXIT
 
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] Starting automated database backup..."
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Starting database backup..."
 
 if docker compose exec -T db \
     pg_dump -U "$DB_USER" -d "$DB_NAME" --no-owner --no-acl \
     | gzip -c > "$TEMP_FILE"; then
-    # Verify gzip archive integrity
+    # Test gzip integrity before committing
     gzip -t "$TEMP_FILE"
     mv "$TEMP_FILE" "$BACKUP_FILE"
-    echo "SUCCESS: Database snapshot written to $BACKUP_FILE"
-    echo "Size: $(du -h "$BACKUP_FILE" | cut -f1)"
+    echo "SUCCESS: Saved to $BACKUP_FILE"
+    echo "Archive size: $(du -h "$BACKUP_FILE" | cut -f1)"
 else
-    echo "ERROR: Database backup failed." >&2
+    echo "ERROR: Backup failed." >&2
     exit 1
 fi
 
-# Prune archives older than 7 days
+# Automatically remove backup archives older than 7 days
 find "$BACKUP_DIR" -maxdepth 1 -type f \
     -name 'cloudapp_*.sql.gz' -mtime +7 -delete
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] Backup cycle completed successfully."
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] Backup complete and old files pruned."
 ```
 
-### 6.2 Scheduled Cron Automation
-Make the script executable and configure automated daily execution:
+### 6.2 Automation via Cron Job
+To schedule this script to run autonomously without manual intervention:
 ```bash
-# Ensure script is executable
+# Make the script executable
 chmod +x /home/carlo/enterprise-cloud/scripts/backup-db.sh
 
-# Configure user crontab
+# Open crontab editor
 crontab -e
 ```
-Add the following scheduled task:
+Add this entry to run every night at 2:00 AM:
 ```cron
-# CloudNova Daily Database Backup at 02:00 AM
 0 2 * * * /home/carlo/enterprise-cloud/scripts/backup-db.sh >> /home/carlo/enterprise-cloud/backups/backup.log 2>&1
 ```
 
-Verify scheduled cron jobs:
+Verify that the cron job is active:
 ```bash
 crontab -l
 sudo systemctl status cron --no-pager
@@ -429,86 +543,84 @@ sudo systemctl status cron --no-pager
 
 <div class="page-break"></div>
 
-# 7. Non-Destructive Disaster Recovery & Restoration
+# 7. Disaster Recovery & Non-Destructive Restore Runbook
 
-### 7.1 Disaster Recovery Principles
-A backup that has never been tested is only a hypothesis. To validate disaster recoverability without endangering live transactional data, restorations are verified against an isolated validation database (`cloudapp_restore_test`).
+### 7.1 Recovery Strategy
+A backup is useless unless you can prove it can be restored. However, testing a restore directly against the production database is risky. My recovery procedure restores the backup into an isolated validation database named `cloudapp_restore_test` to verify data integrity without disturbing live operations.
 
-### 7.2 Step-by-Step Restoration Procedure
+### 7.2 Step-by-Step Restoration Test
 ```bash
-# 1. Identify the latest backup archive
+# Step 1: Find the latest backup file
 LATEST_BACKUP=$(ls -t /home/carlo/enterprise-cloud/backups/cloudapp_*.sql.gz | head -n 1)
-echo "Validating snapshot: $LATEST_BACKUP"
+echo "Testing restore with: $LATEST_BACKUP"
 
-# 2. Verify compression CRC integrity
+# Step 2: Check gzip compression integrity
 gzip -t "$LATEST_BACKUP"
-echo "Archive integrity verified: OK"
+echo "Compression check: OK"
 
-# 3. Create isolated validation database inside PostgreSQL
+# Step 3: Create a fresh test database inside the PostgreSQL container
 docker compose exec -T db psql -U postgres -c "DROP DATABASE IF EXISTS cloudapp_restore_test;"
 docker compose exec -T db psql -U postgres -c "CREATE DATABASE cloudapp_restore_test;"
 
-# 4. Stream restore backup stream into validation database
+# Step 4: Stream the compressed backup into the test database
 gunzip -c "$LATEST_BACKUP" | docker compose exec -T db psql -U postgres -d cloudapp_restore_test
 
-# 5. Query restored tables to verify record persistence
+# Step 5: Verify table schemas and record counts
 docker compose exec -T db psql -U postgres -d cloudapp_restore_test -c "\dt"
 docker compose exec -T db psql -U postgres -d cloudapp_restore_test -c "SELECT count(*) FROM workloads;"
 
-# 6. Cleanup temporary validation database
+# Step 6: Clean up the test database
 docker compose exec -T db psql -U postgres -c "DROP DATABASE cloudapp_restore_test;"
-echo "Disaster recovery validation completed successfully."
+echo "Disaster recovery verification successful."
 ```
 
-<div class="notice-box">
-  <strong>Safety Rule:</strong> Never restore backup archives directly into the active production database (<code>$DB_NAME</code>) during routine audits. Always verify against a separate test database.
+<div class="callout-box">
+  <strong>Rule of Thumb:</strong> Never restore directly into the active database (<code>cloudapp</code>) during a live demo or routine health audit. Always use a temporary staging database to verify recovery.
 </div>
 
 ---
 
 <div class="page-break"></div>
 
-# 8. Application Testing, Telemetry & Observability
+# 8. System Observability & Verification Test Plan
 
-### 8.1 Formal Verification Test Matrix
-The following test plan confirms system readiness and is executed during boardroom defense:
+### 8.1 Formal Verification Checklist
+This test plan proves that the infrastructure fulfills every requirement set by the instructor:
 
-| Test ID | Test Description | Command / Execution | Expected Result | Status |
+| Test ID | Test Objective | Test Command | Expected Output | Status |
 | :---: | :--- | :--- | :--- | :---: |
-| **TEST-01** | Web Ingress HTTP Check | `curl -i http://localhost:8088/` | `HTTP/1.1 200 OK` & HTML payload | **PASSED** |
+| **TEST-01** | Web Ingress | `curl -i http://localhost:8088/` | `HTTP/1.1 200 OK` + HTML page | **PASSED** |
 | **TEST-02** | Deep Health Telemetry | `curl -sS http://localhost:8088/health` | `{"database":"connected","status":"healthy"}` | **PASSED** |
-| **TEST-03** | PostgreSQL Direct Ping | `docker compose exec -T db pg_isready` | `accepting connections (exit code 0)` | **PASSED** |
-| **TEST-04** | Perimeter Port Hardening | `sudo ss -tulpn \| grep -E '5000\|5432'` | Zero processes listening on `0.0.0.0` | **PASSED** |
-| **TEST-05** | Storage Persistence Test | `docker compose restart db` | Database reconnects with 0 record loss | **PASSED** |
+| **TEST-03** | Database Direct Ping | `docker compose exec -T db pg_isready` | `accepting connections (exit code 0)` | **PASSED** |
+| **TEST-04** | Port Hardening Scan | `sudo ss -tulpn \| grep -E '5000\|5432'` | No processes listening on `0.0.0.0` | **PASSED** |
+| **TEST-05** | Storage Persistence | `docker compose restart db` | Database reconnects with 0 lost records | **PASSED** |
 
-### 8.2 End-to-End Observability Probes
+### 8.2 Live Observability Commands
 ```bash
-# Test application health probe endpoint
-curl -i http://127.0.0.1:8088/health
+# Query the active health endpoint
+curl -i http://localhost:8088/health
 
-# Output:
-# HTTP/1.1 200 OK
-# Content-Type: application/json
-# {"database":"connected","status":"healthy"}
-
-# Real-time container resource monitoring
+# Inspect real-time container resource utilization (CPU / RAM)
 docker stats --no-stream
+
+# View live application logs
+docker compose logs --tail=50 app
 ```
 
 ---
 
 <div class="page-break"></div>
 
-# 9. Enterprise Troubleshooting Runbook
+# 9. Troubleshooting Guide
 
-| Observed Fault | Probable Root Cause | Diagnostic Command | Corrective Action |
+| Issue / Error | Probable Root Cause | How to Diagnose | Solution / Fix |
 | :--- | :--- | :--- | :--- |
-| **SSH Connection Refused** | SSH service stopped or VM IP changed | `ip -br address` on VM console<br>`ping <IP>` | Restart SSH daemon: `sudo systemctl restart ssh` |
-| **SSH Connection Timed Out** | VirtualBox adapter set to NAT instead of Bridged | `VBoxManage showvminfo 'ubuntu-docker' --machinereadable` | Set VM Network Adapter 1 to **Bridged Adapter** |
-| **Nginx Returns 502 Bad Gateway** | Flask application container stopped or crashing | `docker compose ps`<br>`docker compose logs --tail=50 app` | Rebuild and restart application: `docker compose restart app` |
-| **Database Connection Refused** | PostgreSQL container starting up or credentials mismatch | `docker compose logs --tail=50 db`<br>`docker compose ps` | Check health check status; verify credentials match `.env` |
-| **Port 8088 Already Bound** | Conflicting service listening on host port 8088 | `sudo ss -tulpn \| grep 8088` | Terminate conflicting process or update port in `docker-compose.yml` |
-| **Backup Integrity Fails (`gzip -t`)** | Disk space exhausted or interrupted stream | `df -h /`<br>`dmesg \| tail -n 20` | Free root filesystem space; execute `./scripts/backup-db.sh` manually |
+| **SSH Connection Refused** | SSH service stopped or VM IP changed | Run `ip -br address` on VM console<br>Ping the IP from host | Run `sudo systemctl restart ssh`<br>Update your PowerShell SSH command with new IP |
+| **SSH Timed Out** | VirtualBox network adapter in wrong mode | Check VirtualBox Network settings | Change Adapter 1 from NAT to **Bridged Adapter** |
+| **502 Bad Gateway (Nginx)** | Flask app container crashed or stopped | Run `docker compose ps`<br>Run `docker compose logs app` | Restart container: `docker compose restart app`<br>Check application logs for syntax errors |
+| **Database Connection Refused** | Postgres still starting up or bad `.env` credentials | Run `docker compose logs db`<br>Check `.env` values | Verify that `DB_USER` and `DB_PASSWORD` match in both app and db services |
+| **Port 8088 Already Bound** | Another service on the host is using port 8088 | Run `sudo ss -tulpn \| grep 8088` | Kill the conflicting process or change port mapping in `docker-compose.yml` |
+| **Backup Integrity Fails (`gzip -t`)** | Virtual disk is full or dump was interrupted | Run `df -h /`<br>Check `dmesg \| tail -n 20` | Free up disk space on root filesystem and re-run backup script |
 
 ---
 
@@ -516,130 +628,159 @@ docker stats --no-stream
 
 # 10. Standard Operating Procedures (SOPs)
 
-### SOP-01: Server Booting & Initialization
-1. Launch **Oracle VM VirtualBox**.
-2. Select virtual machine `ubuntu-docker` and start in **Headless** mode (or `VBoxManage startvm 'ubuntu-docker' --type headless`).
-3. Allow 30 seconds for kernel boot and DHCP IP assignment.
+### SOP-01: Starting the Server
+1. Open **Oracle VM VirtualBox**.
+2. Select the `ubuntu-docker` virtual machine and start it in **Headless** mode (or run `VBoxManage startvm 'ubuntu-docker' --type headless`).
+3. Wait 30 seconds for the OS to boot and receive a DHCP address.
 
-### SOP-02: Establishing Administrative Session
-From Windows Terminal / PowerShell:
+### SOP-02: Connecting from Windows PowerShell
+Open Windows PowerShell and run:
 ```powershell
 ssh carlo@192.168.100.52
-# Enter administrative credentials when prompted
+# Enter your password when prompted
 ```
 
-### SOP-03: Daily Infrastructure Health Assessment
+### SOP-03: Daily Health Check
 ```bash
 cd /home/carlo/enterprise-cloud
 docker compose ps
-curl -sS http://localhost:8088/health
-sudo ufw status verbose
+curl -s http://localhost:8088/health
+sudo ufw status
 ls -lh backups/
 ```
 
-### SOP-04: Graceful Infrastructure Shutdown
+### SOP-04: Graceful Shutdown
 ```bash
 cd /home/carlo/enterprise-cloud
-# Stop and remove containers WITHOUT deleting persistent volumes
+# Stop the containers safely (do NOT use -v flag)
 docker compose down
 
-# Gracefully shut down guest OS
+# Shutdown the virtual machine
 sudo shutdown -h now
 ```
-<div class="warning-box">
-  <strong>CAUTION:</strong> Never pass the <code>-v</code> flag to <code>docker compose down</code> unless you intend to permanently delete all database records.
+<div class="callout-box">
+  <strong>WARNING:</strong> Never add the <code>-v</code> flag to <code>docker compose down</code> unless you intentionally want to delete all stored database volumes.
 </div>
 
 ---
 
 <div class="page-break"></div>
 
-# 11. Live Defense & KillerCoda Deployment Guide
+# 11. Live Defense & KillerCoda Deployment Script
 
-During the simulated corporate boardroom presentation, you must be capable of deploying the complete stack on a fresh Ubuntu host or **KillerCoda** sandbox instance (Rule 3).
-
-### Step-by-Step Live Defense Script:
+According to Rule 3 of the lab brief, I must be ready to deploy the entire infrastructure on a fresh **KillerCoda** sandbox instance during live defense. Here are the exact commands to run in order:
 
 ```bash
-# 1. Clone your portfolio repository
+# Step 1: Clone the GitHub repository
 git clone https://github.com/carlonimer/CCM101-cnimer.git
 cd CCM101-cnimer/Laboratory-10-Enterprise-Cloud-Architect
 
-# 2. Configure environment variables
+# Step 2: Set up environment secrets
 cp .env.example .env
 
-# 3. Launch multi-tier stack with Infrastructure as Code
+# Step 3: Launch the containerized multi-tier stack
 docker compose up -d --build
 
-# 4. Enforce host firewall security perimeter
+# Step 4: Configure and lock down host firewall
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 22/tcp comment 'SSH'
-sudo ufw allow 8088/tcp comment 'Web Entrypoint'
+sudo ufw allow 8088/tcp comment 'CloudNova Web App'
 sudo ufw --force enable
 
-# 5. Make automation script executable and run test backup
+# Step 5: Test the autonomous backup script
 chmod +x scripts/backup-db.sh
 ./scripts/backup-db.sh
 
-# 6. Prove system observability and security
+# Step 6: Verify all services are healthy and running
 docker compose ps
 curl -s http://localhost:8088/health
 sudo ufw status verbose
-ls -lh ~/enterprise-cloud/backups/ || ls -lh backups/
+ls -lh backups/
 ```
 
-### Live Penetration / Defense Proof:
-Demonstrate to CEO Jen Torres that internal ports are impenetrable:
+### Proving Security During the Defense
+Run these commands from PowerShell on your laptop to prove to CEO Jen Torres that internal ports cannot be bypassed:
 ```powershell
-# From Windows PowerShell (Host machine):
-Test-NetConnection -ComputerName 192.168.100.52 -Port 8088  # Returns: True (Allowed)
-Test-NetConnection -ComputerName 192.168.100.52 -Port 22    # Returns: True (Allowed)
-Test-NetConnection -ComputerName 192.168.100.52 -Port 5432  # Returns: False (Blocked)
+# Web port is open and accessible
+Test-NetConnection -ComputerName 192.168.100.52 -Port 8088   # Output: TcpTestSucceeded : True
+
+# SSH port is open for administration
+Test-NetConnection -ComputerName 192.168.100.52 -Port 22     # Output: TcpTestSucceeded : True
+
+# Database port is blocked by firewall and network isolation
+Test-NetConnection -ComputerName 192.168.100.52 -Port 5432   # Output: TcpTestSucceeded : False
 ```
 
 ---
 
 <div class="page-break"></div>
 
-# 12. Academic Integrity & Architecture Synthesis
+# 12. Final Reflection & Academic Integrity
 
-### 12.1 Guiding Principle: "Be the Pilot of AI, Not the Passenger"
-> *"Use technology to enhance your learning, but let your own knowledge, judgment, and critical thinking guide your work."*  
+### 12.1 Academic Integrity Policy
+> *"Be the pilot of AI, not the passenger. Use technology to enhance your learning, but let your own knowledge, judgment, and critical thinking guide your work."*  
 > — **CCM101 Academic Integrity Policy**
 
-Throughout this final requirement, modern AI and developer tools served as an accelerator for syntax validation, configuration templating, and documentation structure. However, every architectural decision—such as separating bridge networks to prevent Docker from bypassing UFW, architecting non-destructive database restore verification, and tuning Gunicorn worker threads—was verified, implemented, and defended directly. True system architecture requires hands-on understanding; an AI cannot run hypervisor bridged packets or defend a system live in a corporate boardroom.
+Throughout this final mission, I used AI tools as a learning assistant to brainstorm options, debug syntax errors, and refine documentation structure. However, I remained the pilot of the project:
+- I chose and verified the microservices stack (Nginx + Flask + PostgreSQL).
+- I personally configured the Bridged network adapter and solved the IP routing between Windows and Ubuntu.
+- I identified and mitigated the risk of Docker bypassing UFW by isolating the database on an internal network with `internal: true`.
+- I tested database persistence by restarting containers and rebooting the VM to verify zero data loss.
+- I wrote and verified the disaster recovery script and tested non-destructive restoration into a separate test database.
 
-### 12.2 Semester Learning Synthesis (Missions 1 to 10)
-From navigating the command line in **Mission 1** to architecting sovereign multi-tier cloud infrastructure in **Mission 10**, this curriculum transitioned my skill set from user to engineer:
-- **Foundations (Missions 1–3):** Linux headless administration, system diagnostics, and multi-cloud trade-off analysis.
-- **Modern Virtualization (Missions 4–6):** Docker containerization, images, volumes, and microservice networking.
-- **Operations & Security (Missions 7–9):** System monitoring, firewall rules, automated shell scripting, and cron scheduling.
-- **Culmination (Mission 10):** End-to-end realization of an Enterprise Cloud Architect delivering production-ready, observable, and resilient infrastructure.
+Understanding every command and architecture decision ensures I can confidently present and defend this system live before my instructor.
+
+### 12.2 What I Learned Throughout CCM101
+Looking back from **Mission 1** (learning basic Linux navigation, file permissions, and system info) to **Mission 10** (architecting a private cloud with Docker, persistent storage, firewalls, and automated cron jobs), this course helped me transition from simply using computers to engineering reliable, secure infrastructure.
+
+These practical skills—Linux administration, container orchestration, Infrastructure as Code, network security, and disaster recovery scripting—give me a strong foundation for future coursework and a career in Cloud Computing, DevOps, and Systems Administration.
 
 ---
 
 <div class="page-break"></div>
 
-# Appendices: Reference Specifications & Glossary
+# Appendices: Master Inventory & Command Reference
 
-### Appendix A: Critical Directory & File Paths
-- **Application Directory:** `/home/carlo/enterprise-cloud/`
-- **Application Source:** `/home/carlo/enterprise-cloud/app/`
-- **Nginx Ingress Configuration:** `/home/carlo/enterprise-cloud/nginx/default.conf`
-- **Environment Secrets:** `/home/carlo/enterprise-cloud/.env`
+### Appendix A: Important Directory Paths
+- **Project Root Directory:** `/home/carlo/enterprise-cloud/`
+- **Application Source Code:** `/home/carlo/enterprise-cloud/app/`
+- **Nginx Configuration:** `/home/carlo/enterprise-cloud/nginx/default.conf`
+- **Environment Variables:** `/home/carlo/enterprise-cloud/.env`
 - **Database Backup Storage:** `/home/carlo/enterprise-cloud/backups/`
 - **PostgreSQL Volume Mount:** `/var/lib/postgresql/data` (`postgres_data`)
 - **Automated Backup Script:** `/home/carlo/enterprise-cloud/scripts/backup-db.sh`
 
-### Appendix B: Technical Glossary
-- **Reverse Proxy:** An intermediate proxy service (Nginx) that intercepts public web requests and distributes them to internal backend services.
-- **Persistent Volume:** A Docker storage mechanism that stores state directly on the host filesystem independently of the container lifecycle.
-- **UFW (Uncomplicated Firewall):** A front-end interface for Linux iptables managing host network packet filtering.
-- **Zero-Trust Network:** A security model where no internal service or port is accessible by default unless explicitly whitelisted.
-- **WSGI (Web Server Gateway Interface):** Standard Python calling convention (Gunicorn) interfacing web servers with application frameworks.
+### Appendix B: Quick Command Cheat Sheet
+```bash
+# Start infrastructure
+docker compose up -d
+
+# Stop infrastructure (preserves data)
+docker compose down
+
+# Check container health and status
+docker compose ps
+
+# View live logs
+docker compose logs -f
+
+# Check system resources
+docker stats --no-stream
+free -h
+df -h /
+
+# Run manual database backup
+./scripts/backup-db.sh
+
+# Check firewall status
+sudo ufw status verbose
+
+# Test application health
+curl -s http://localhost:8088/health
+```
 
 ---
-*Enterprise Cloud Infrastructure Operational Manual*  
-*CCM101 – Cloud Computing Final Requirement | Mission 10*  
+*Enterprise Cloud Infrastructure – Operational Manual*  
+*CCM101 – Cloud Computing Final Requirement (Mission 10)*  
 *University of Eastern Pangasinan — College of Information Technology*
