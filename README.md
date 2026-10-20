@@ -1,5 +1,6 @@
+<h1 align="center">UNIVERSITY OF EASTERN PANGASINAN</h1>
+
 <p align="center">
-  <img src="uep-header.png" alt="University of Eastern Pangasinan" width="600"><br><br>
   <strong>College of Information Technology</strong><br>
   <strong>CCM101 – Cloud Computing</strong><br>
   CLOUD COMPUTING LABORATORY ACTIVITIES
