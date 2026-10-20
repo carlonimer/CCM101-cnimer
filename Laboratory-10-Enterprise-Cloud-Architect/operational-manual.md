@@ -14,16 +14,6 @@
 **Instructor:** Jenkielyn C. Torres  
 **Date:** October 2026  
 
-> **FORMAT SPECIFICATION:** Coupon 5.5 x 8.5 Operational Manual (Portrait)
-
----
-
-# Document Overview
-
-This operational manual is the complete technical documentation for my final requirement in **CCM101 (Cloud Computing)**, titled **Mission 10: The Enterprise Cloud Architect**. 
-
-In this lab, I took on the role of an Enterprise Cloud Architect for CloudNova Technologies under simulated CEO Jen Torres. The objective was to design, deploy, secure, automate, and document a sovereign, multi-tier web application stack running on a local Linux virtual machine, completely from scratch without guided tutorials.
-
 # Table of Contents
 1. [Mission Brief & Core Architecture](#1-mission-brief--core-architecture)
 2. [Base Infrastructure & VM Provisioning](#2-base-infrastructure--vm-provisioning)
