@@ -1,22 +1,18 @@
-# UNIVERSITY OF EASTERN PANGASINAN
-### College of Information Technology
-**Department of Computer Studies • Bachelor of Science in Information Technology**
+<p align="center">
+  <img src="uep-header.png" alt="University of Eastern Pangasinan" width="600"><br><br>
+  <strong>College of Information Technology</strong><br>
+  <strong>CCM101 – Cloud Computing</strong><br>
+  CLOUD COMPUTING LABORATORY ACTIVITIES
+</p>
 
----
-
-# CCM101 - Cloud Computing
-## Enterprise Cloud Architect – Operational Manual
-
----
-
+**CCM101 - Cloud Computing**  
+**Enterprise Cloud Architect – Operational Manual**  
 **Project:** Secure Multi-Tier Web Application  
 **Application Stack:** Python 3.12 Flask + PostgreSQL 16 + Nginx Alpine  
-**Prepared by:** Carlo Nimer  
-**Section:** BSIT - 4J  
+**Prepared by:** Carlo A. Nimer | John Earl Valdez  
+**Section:** BSIT 4J  
 **Instructor:** Jenkielyn C. Torres  
 **Date:** October 2026  
-
-> **FORMAT SPECIFICATION:** Coupon 5.5 x 8.5 Operational Manual (Portrait)
 
 ---
 
@@ -30,7 +26,7 @@ In this lab, I took on the role of an Enterprise Cloud Architect for CloudNova T
 | Field | Details |
 | :--- | :--- |
 | **Document Title** | Enterprise Cloud Architect – Operational Manual |
-| **Author** | Carlo Nimer (Fourth Year – BSIT-4J) |
+| **Author** | Carlo A. Nimer \| John Earl Valdez (Fourth Year – BSIT 4J) |
 | **Course & Code** | CCM101 – Cloud Computing |
 | **Instructor** | Jenkielyn C. Torres |
 | **Institution** | University of Eastern Pangasinan (College of Information Technology) |

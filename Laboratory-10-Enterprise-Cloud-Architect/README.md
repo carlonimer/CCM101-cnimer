@@ -1,10 +1,18 @@
+<p align="center">
+  <img src="uep-header.png" alt="University of Eastern Pangasinan" width="600"><br><br>
+  <strong>College of Information Technology</strong><br>
+  <strong>CCM101 – Cloud Computing</strong><br>
+  CLOUD COMPUTING LABORATORY ACTIVITIES
+</p>
+
 # Laboratory Activity 10: The Enterprise Cloud Architect
 **Course:** CCM101 – Cloud Computing  
 **Role:** Enterprise Cloud Architect (CloudNova Technologies)  
-**Architect:** Carlo Nimer  
-**Section:** BSIT - 4J  
+**Architects:** Carlo A. Nimer | John Earl Valdez  
+**Section:** BSIT 4J  
 **Instructor:** Jenkielyn C. Torres  
 **Institution:** University of Eastern Pangasinan — College of Information Technology  
+**Date:** October 2026  
 
 ---
 

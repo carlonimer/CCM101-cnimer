@@ -1,8 +1,16 @@
+<p align="center">
+  <img src="uep-header.png" alt="University of Eastern Pangasinan" width="600"><br><br>
+  <strong>College of Information Technology</strong><br>
+  <strong>CCM101 – Cloud Computing</strong><br>
+  CLOUD COMPUTING LABORATORY ACTIVITIES
+</p>
+
 # Cloud Computing Portfolio (CCM101)
-**Student Name:** Carlo Nimer  
+**Student Names:** Carlo A. Nimer | John Earl Valdez  
 **Institution:** University of Eastern Pangasinan — College of Information Technology  
-**Program & Section:** Bachelor of Science in Information Technology (BSIT - 4J)  
+**Program & Section:** Bachelor of Science in Information Technology (BSIT 4J)  
 **Instructor:** Jenkielyn C. Torres  
+**Date:** October 2026  
 
 Welcome to my Cloud Computing Portfolio repository for **CCM101**. This portfolio showcases the hands-on laboratories, system blueprints, virtualization setups, containerized environments, security configurations, and automation scripts developed throughout the semester.
 
