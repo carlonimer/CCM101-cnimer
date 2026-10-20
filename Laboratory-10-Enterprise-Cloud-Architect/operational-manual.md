@@ -1,10 +1,9 @@
 # UNIVERSITY OF EASTERN PANGASINAN
+
 ### College of Information Technology
-**Department of Computer Studies • Bachelor of Science in Information Technology**
+### CCM101 - Cloud Computing
+### CLOUD COMPUTING LABORATORY ACTIVITIES 
 
----
-
-# CCM101 - Cloud Computing
 ## Enterprise Cloud Architect – Operational Manual
 
 **Project:** Secure Multi-Tier Web Application  
