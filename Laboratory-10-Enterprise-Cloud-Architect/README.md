@@ -1,7 +1,7 @@
 # Laboratory Activity 10: The Enterprise Cloud Architect
 **Course:** CCM101 – Cloud Computing  
 **Role:** Enterprise Cloud Architect (CloudNova Technologies)  
-**Architect:** Carlo Nimer  
+**Architect:** Carlo Nimer | John Earl Valdez
 **Section:** BSIT - 4J  
 **Instructor:** Jenkielyn C. Torres  
 **Institution:** University of Eastern Pangasinan — College of Information Technology  
