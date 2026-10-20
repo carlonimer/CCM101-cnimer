@@ -16,25 +16,6 @@
 
 ---
 
-# Document Overview
-
-This operational manual is the complete technical documentation for my final requirement in **CCM101 (Cloud Computing)**, titled **Mission 10: The Enterprise Cloud Architect**. 
-
-In this lab, I took on the role of an Enterprise Cloud Architect for CloudNova Technologies under simulated CEO Jen Torres. The objective was to design, deploy, secure, automate, and document a sovereign, multi-tier web application stack running on a local Linux virtual machine, completely from scratch without guided tutorials.
-
-### Document Control
-| Field | Details |
-| :--- | :--- |
-| **Document Title** | Enterprise Cloud Architect – Operational Manual |
-| **Author** | Carlo A. Nimer \| John Earl Valdez (Fourth Year – BSIT 4J) |
-| **Course & Code** | CCM101 – Cloud Computing |
-| **Instructor** | Jenkielyn C. Torres |
-| **Institution** | University of Eastern Pangasinan (College of Information Technology) |
-| **Version** | 1.0 (Final Complete Release) |
-| **Submission Date** | October 2026 |
-
----
-
 # Table of Contents
 1. [Mission Brief & Core Architecture](#1-mission-brief--core-architecture)
 2. [Base Infrastructure & VM Provisioning](#2-base-infrastructure--vm-provisioning)
@@ -48,7 +29,7 @@ In this lab, I took on the role of an Enterprise Cloud Architect for CloudNova T
 10. [Standard Operating Procedures (SOPs)](#10-standard-operating-procedures-sops)
 11. [Live Defense & KillerCoda Deployment Script](#11-live-defense--killercoda-deployment-script)
 12. [Final Reflection & Academic Integrity](#12-final-reflection--academic-integrity)
-* [Appendices: Master Inventory & Command Reference](#appendices-master-inventory--command-reference)
+* [Appendices: Inventory & Command Reference](#appendices-master-inventory--command-reference)
 
 ---
 
@@ -538,7 +519,7 @@ These practical skills—Linux administration, container orchestration, Infrastr
 
 ---
 
-# Appendices: Master Inventory & Command Reference
+# Appendices: Inventory & Command Reference
 
 ### Appendix A: Important Directory Paths
 - **Project Root Directory:** `/home/carlo/enterprise-cloud/`
@@ -549,7 +530,7 @@ These practical skills—Linux administration, container orchestration, Infrastr
 - **PostgreSQL Volume Mount:** `/var/lib/postgresql/data` (`postgres_data`)
 - **Automated Backup Script:** `/home/carlo/enterprise-cloud/scripts/backup-db.sh`
 
-### Appendix B: Quick Command Cheat Sheet
+### Appendix B: Quick Command 
 ```bash
 # Start infrastructure
 docker compose up -d
